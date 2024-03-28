@@ -1,7 +1,9 @@
 Vorlesung + Übungsblätter + Assignment (Aufgabenstellung) befinden sich als PDF-Datei in:
 
 3.Assignment_Vorlesungsfolien.pdf
+
 3.Assignment_Uebungsaufgaben.pdf
+
 3.Assignments.pdf
 
 
