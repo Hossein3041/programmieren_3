@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- file: aufgabe02-2.1-a.dtd -->
+<!-- DTD für Aufgabenblatt 02 - 2.1 - a)-->
+<!ELEMENT projekt (team+)>
+<!ELEMENT team (teamleiter+, mitarbeiter+)>
+<!ELEMENT teamleiter (#PCDATA)>
+<!ELEMENT mitarbeiter (skill+)>
+<!ELEMENT skill (#PCDATA)>
+
+<!ATTLIST projekt projekt_ID CDATA #REQUIRED>
+<!ATTLIST projekt aufgaben_ID ID #REQUIRED>
+<!ATTLIST projekt deadline_ID ID #REQUIRED>
+<!ATTLIST team team_ID ID #REQUIRED>
+<!ATTLIST team teilaufgaben_ID ID #REQUIRED>
+<!ATTLIST teamleiter leiter_ID CDATA #REQUIRED>
+<!ATTLIST mitarbeiter mitarbeiter_ID ID #REQUIRED>
+<!ATTLIST mitarbeiter leiter_ID CDATA #REQUIRED>
+<!ATTLIST mitarbeiter projekt_ID CDATA #REQUIRED>
+<!ATTLIST mitarbeiter name CDATA #REQUIRED>
+
+
+
+<!ENTITY skill01 "Java">
+<!ENTITY skill02 "JavaScript">
+<!ENTITY skill03 "Python">
+<!ENTITY skill04 "PHP">
+<!ENTITY skill05 "TypeScript">

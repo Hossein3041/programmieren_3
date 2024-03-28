@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- file: aufgabe03-3.3.xml -->
+<projekt
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="aufgabe03-3.3.xsd"
+        projekt_ID="P1"
+        aufgaben_ID="A1"
+        deadline_ID="D1">
+
+    <team team_ID="T1" teilaufgaben_ID="TA1">
+        <teamleiter leiter_ID="TL1">
+            Donald Trump
+        </teamleiter>
+        <mitarbeiter mitarbeiter_ID="M1" leiter_ID="TL1" projekt_ID="P1" name="Joe Biden">
+            <skill>Java</skill>
+        </mitarbeiter>
+        <mitarbeiter mitarbeiter_ID="M2" leiter_ID="TL1" projekt_ID="P1" name="Bill Clinton">
+            <skill>JavaScript</skill>
+        </mitarbeiter>
+    </team>
+</projekt>

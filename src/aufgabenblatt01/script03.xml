@@ -1,0 +1,20 @@
+<?cxml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE courseDoc SYSTEM "C:\Users\hosse\IdeaProjects\XMLHossein\src\aufgabenblatt01\script01.dtd">
+<courseDoc>
+    <title>Das ist der Title</title>
+    <abstract>Zusammenfassung...</abstract>
+    <chapter>
+        <heading>Hallo Welt</heading>
+        <para> Absatz eins</para>
+        <para> Absatz zwei</para>
+    </chapter>
+    <chapter>
+        <heading>Hallo Teufel</heading>
+        <para> Absatz eins</para>
+        <sparePages/>
+    </chapter>
+    <chapter>
+        <heading>Hallo Tschüss</heading>
+        <para> Absatz eins</para>
+    </chapter>
+</courseDoc>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- file: script02a.xsd -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:complexType name="chapterExamType">
+        <xs:complexContent>
+            <xs:extension base="chapterType">
+                <xs:sequence>
+                    <xs:element name="question" minOccurs="1"
+                                maxOccurs="unbounded" type="paraType" />
+                </xs:sequence>
+                <xs:attribute name="success" use="optional"
+                              type="percentage"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="courseDoc">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="abstract" type="abstractType"/>
+                <xs:choice maxOccurs="unbounded">
+                    <xs:element name="chapter" type="chapterType"/>
+                    <xs:element name="chapterExam" type="chapterExamType"/>
+                </xs:choice>
+            </xs:sequence>
+            <xs:attribute name="title" use="required"/>
+        </xs:complexType>
+        <xs:unique name="uniqueChapters">
+            <xs:selector xpath="./chapter | ./chapterExam"/>
+            <xs:field xpath="@heading"/>
+        </xs:unique>
+    </xs:element>

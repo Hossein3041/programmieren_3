@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- file: aufgabe02-2.1-b.xml -->
+<!DOCTYPE projekt SYSTEM "aufgabe02-2.1-a.dtd">
+<projekt projekt_ID="eins" aufgaben_ID="zwei" deadline_ID="drei">
+    <team team_ID="vier" teilaufgaben_ID="fünf">
+        <teamleiter leiter_ID="sechs">
+        </teamleiter>
+        <mitarbeiter name="thomas" mitarbeiter_ID="sieben" leiter_ID="sechs" projekt_ID="eins">
+        </mitarbeiter>
+    </team>
+</projekt>

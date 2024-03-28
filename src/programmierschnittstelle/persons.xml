@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE persons [
+<<<<<<< HEAD
         <!ELEMENT lastname (#PCDATA)>
         <!ELEMENT firstname (#PCDATA)>
         <!ELEMENT residence (#PCDATA)>
@@ -10,6 +11,18 @@
         <!ATTLIST person friends IDREFS #IMPLIED>
         <!ATTLIST persons file CDATA #IMPLIED>
         ]>
+=======
+    <!ELEMENT lastname (#PCDATA)>
+    <!ELEMENT firstname (#PCDATA)>
+    <!ELEMENT residence (#PCDATA)>
+    <!ELEMENT children (person*)>
+    <!ELEMENT person (firstname, (lastname?), (children?), (residence?))>
+    <!ELEMENT persons (person+)>
+    <!ATTLIST person id ID #REQUIRED>
+    <!ATTLIST person friends IDREFS #IMPLIED>
+	<!ATTLIST persons file CDATA #IMPLIED>
+    ]>
+>>>>>>> be9c46f4c7afe63e4c0c8442d8ece8f8d22b130d
 <?mach was draus?>
 <persons file="this">
     <!-- Hier beginnen die Daten -->
@@ -34,6 +47,7 @@
                         <firstname> Justun Bieber </firstname>
                         <lastname> Berlin </lastname>
                     </person>
+<<<<<<< HEAD
                     <person id="p-18">
                         <firstname> Usain </firstname>
                         <lastname> Bolt </lastname>
@@ -45,6 +59,11 @@
                 <firstname> Barack </firstname>
                 <lastname> Obama </lastname>
             </person>
+=======
+                </children>
+                <residence>Planet der Affen</residence>
+            </person>
+>>>>>>> be9c46f4c7afe63e4c0c8442d8ece8f8d22b130d
         </children>
     </person>
     <person id="p-3">
@@ -74,11 +93,19 @@
         <firstname>Ferkel<!-- Kommentar bei Ferkel--></firstname>
         <children>
             <person id="p-11" friends=" p-6 p-10 ">
+<<<<<<< HEAD
                 <firstname> Joe </firstname>
                 <children>
                     <person id="p-15" friends=" p-8 p-10">
                         <firstname> Bill </firstname>
                         <lastname> Clinton </lastname>
+=======
+                <firstname>Joe Biden</firstname>
+                <children>
+                    <person id="p-15" friends=" p-8 p-10">
+                        <firstname> Bill Clinton</firstname>
+                        <lastname> New York</lastname>
+>>>>>>> be9c46f4c7afe63e4c0c8442d8ece8f8d22b130d
                     </person>
                 </children>
                 <residence>Waschington DC</residence>
@@ -86,6 +113,9 @@
         </children>
     </person>
     <!-- Kommentar zum Schluss -->
+<<<<<<< HEAD
     <!-- Bei PersonenParser, habe ich vorname zu früh auf false gesetzt. Dadurch werden nicht alle Daten mitgenommen -->
+=======
+>>>>>>> be9c46f4c7afe63e4c0c8442d8ece8f8d22b130d
     <?tu was damit?>
 </persons>

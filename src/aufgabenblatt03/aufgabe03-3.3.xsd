@@ -1,0 +1,52 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="projekt">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="team" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="teamleiter" type="xs:string" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="leiter_ID" type="xs:ID" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="mitarbeiter" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="skill" type="xs:string" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="mitarbeiter_ID" type="xs:ID" use="required"/>
+                                    <xs:attribute name="leiter_ID" type="xs:string" use="required"/>
+                                    <xs:attribute name="projekt_ID" type="xs:string" use="required"/>
+                                    <xs:attribute name="name" type="xs:string" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="team_ID" type="xs:ID" use="required"/>
+                        <xs:attribute name="teilaufgaben_ID" type="xs:ID" use="required"/>
+                    </xs:complexType>
+                    <!-- Eindeutige Identifikation für team_ID -->
+                    <xs:unique name="uniqueTeamID">
+                        <xs:selector xpath="team"/>
+                        <xs:field xpath="team_ID"/>
+                    </xs:unique>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="projekt_ID" type="xs:string" use="required"/>
+            <xs:attribute name="aufgaben_ID" type="xs:ID" use="required"/>
+            <xs:attribute name="deadline_ID" type="xs:ID" use="required"/>
+        </xs:complexType>
+
+        <!-- Definiere Schlüssel für team_ID -->
+        <xs:key name="teamKey">
+            <xs:selector xpath="//team"/>
+            <xs:field xpath="@team_ID"/>
+        </xs:key>
+
+        <!-- Definiere Fremdschlüsselreferenz für leiter_ID in mitarbeiter -->
+        <xs:keyref name="leiterKeyRef" refer="teamKey">
+            <xs:selector xpath="//mitarbeiter"/>
+            <xs:field xpath="@leiter_ID"/>
+        </xs:keyref>
+    </xs:element>
+</xs:schema>
