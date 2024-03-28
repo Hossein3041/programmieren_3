@@ -1,0 +1,103 @@
+Assignment 3 - Abgabe 29. Januar 2024
+
+Ausgangssituation:
+- Gegeben:
+  beliebige XHTML-Seite:
+  -> mehrere Instanzen der Elemente h1, h2, img, p und a
+  -> Listen mit mehreren li-Instanzen und Tabellen mit tr-Instanzen vorhanden sein
+  -> Tabellen und Listen können geschachtelt sein
+
+- Ziel:
+  XHTML-Seite auf Wunsch derart modifizieren (verunstalten):
+  -> Instanzen desselben Typs auf der Seite untereinander vertauscht - also neu gemischt werden.
+  -> Beispiel: - alle vorhandenen h1-Überschriften,
+               - alle img-Bilder
+               - oder die Zeilen tr von allen Tabellen neu positioniert werden
+
+  Beachte: Mischen bzw. Vertauschen der Knoten ist so zu verstehen:
+           Nicht die Inhalte der Knoten sollen kopiert und neu angelegt werden,
+           sondern nur die Verknüpfungen der bestehenden Knoten untereinander geändert werden!
+
+Aufgabe:
+- In XHTML eine einfache Beispielseite entwerfen, mit mindestens oben aufgezählten Sprachelemente.
+  -> JavaScript-Code in einer separaten Datei, die in die XHTML-Seite eingefügt werden kann,
+     darin die Modifikation unter Verwendung DOM-API und DOM Level 2-Event-Handler
+
+  JS-Code erfüllt folgende Aufgaben:
+  a) Nach dem Laden der Seite im Browser:
+  auf derselben Seite, oder einem anderen Fenster, ein Steuerabschnitt hinzufügen
+
+  Im Steuerabschnitt:
+  Für oben angegebenen Sprachelemente, jeweils die Anzahl der in der konkreten XHTML-Seite
+  vorhandenen Instanzen angeben.
+
+  b) Nach Auswahl eines Sprachelements, z.B.: durch "Anklicken" eines Buttons,
+  wird das Mischen der Instanzen angestoßen
+
+  Das Mischen wird durch mehrere, für den Benutzer sichtbare, hintereinander ausgeführte
+  paarweise Vertauschungen von jeweils zwei zufällig ausgewählten Instanzen realisiert.
+
+- Beachte:
+  Instanzen desselben Elementtyps können teilweise rekursiv verschachtelt sein!
+
+  Es können auch weitere XHTML-Sprachelemente zum Mischen beigefügt werden oder
+  zusätzlich zum Mischen eigene Modifikation implementieren.
+
+
+Technisches Vorgehen:
+
+Eine Funktion implementieren:
+- Wenn der Browser geladen ist, soll die Funktion aufgerufen werden:
+    -> Steuerabschnitt:
+    Button für jeden Instanz:
+        -> Für Instanzen desselben Typs, die Anzahl angeben
+        -> Button Anklicken:
+            - Mischen der Instanzen wird angestoßen:
+              1. Mischen muss für Anwender sichtbar sein!
+              2. Zwei zufällige Instanzen desselben Typs werden zufällig ausgewählt
+              3. Diese zwei Instanzen werden vertauscht
+              4. Instanzen desselben Typs können rekursiv verschachtelt sein
+
+Weiteres Vorgehen:
+- Mischen soll für Benutzer sichtbar sein
+- XHTML-Datei weiter optimieren, mit weiteren Inhalten
+    -> Mehr Elemente,
+    -> Mehr Verschachtelung
+    -> Inhalt mit CSS und etc. besser strukturieren, ...
+
+
+Drag And Drop:
+- Drag and Drop implementieren
+    -> Vertauschen findet in drop-Event statt
+    -> Von den beiden Elementen, die Ids nehmen
+- Drag and Drop auf Touch umstellen, oder touch zusätzlich hinzufügen
+    -> Vertauschen findet in touchend statt
+
+
+Schüttel - Ziel:
+
+1. Fall:
+Wird geschüttelt -> ElementTyp && Instanzen auswählen -> zwei Instanzen werden getauscht
+
+Oben ist quatsch!
+
+2. Fall:
+Elementtyp && Instanzen auswählen -> Entsscheidung mit Button tauschen oder schütteln
+
+3. Fall:
+Für jeden Elementtyp ein Button einfügen:
+
+Schüttel technisches Vorgehen:
+- Button wird geklickt!
+- SchüttelFunktion geht auf
+- SchüttelFunktion nimmt das Elementtyp als und üergibt sie der auswahlAktInstanz()
+
+- Die Beschleunigung soll nur aktiviert sein, wenn man auf dem Button klickt, sonst soll Beschleunigung nicht aktiv sein
+- Wenn man Button zumacht, soll Beschleunigung wieder deaktiviert werden
+- Wenn auf dem Button klickt, soll der aktTyp3 an Beschleunigungsfunktion übergeben werden, dann wird geschüttelt
+
+Neuer Ansatz:
+
+1. Fall:
+- Wenn auf dem Button geklickt wird, soll der Benutzer 5 Sekunden Zeit haben, um das Gerät zu schütteln.
+

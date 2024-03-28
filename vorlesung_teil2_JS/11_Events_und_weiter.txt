@@ -1,0 +1,772 @@
+Teil 2, - Weitere Aspekte von JavaScript
+
+11 Events
+- Fakten:
+    -> Events ausgelöst, - durch Auftreten von Ereignissen
+    -> Für Events können registriert werden:
+        - Listener
+        - Event-handler
+
+11.1 HTML-Event-handler
+- Zu jedem Browser-Event (z.B. click, load, oder mouseover)
+  gehört ein Event-handler: Vor dem Namen davon wird ein "on" geschrieben:
+  z.B.: onclick, onload, onmouseover
+
+<form method="post" action="">
+    <input type="text" name="foo" value="type here..."/>
+    <input type="button" value="Click me"
+        onclick="´alert(`${this}
+          value: "${value}"
+          event: "${event}"
+          foo.value: "${foo.value}"
+          method: "${method}"
+          action: "${action}"
+          document: "${document.title}"`)´ />
+</form>
+
+Interna
+- Intern wird eine neue Funktion definiert, die
+    -> mit this das HTML-Element ansprechen kann
+    -> Zugriff auf das Attribut value hat
+    -> über die lokale Variable event Zugriff auf den Event hat
+    -> auf andere Member desselben form-Elements und auf form selbst zugreifen kann
+    -> Zugriff auf die Member von document hat
+
+Nachteile von HTML-Event-handler
+- Timing: HTML-Element könnte dargestellt werden,
+          ohne, dass JS-Code ausführbar ist
+          (wenn z.B. auf eine weiter unten sich befindende Funktion zugegriffen wird)
+          Abhilfe: HTML-Eventhandler in try/catch-Block hängen
+
+- Zugriff auf Daten von Elementen in der Umgebung:
+    Abhängig von der konkreten JS-Implementierung
+
+- Starke Kopplung zwischen HTML und JS-Code:
+    wenig änderungsfreundlich
+
+=> kein JS-Code direkt in HTML einbetten!
+
+11.2 DOM Level 0-Event-handler
+
+<form method="post" action="">
+    <input type="text" name="foo" value="type here..."/>
+    <input id="myButtonLevel0"
+           type="button" value="Click me" />
+</form>
+<!-- Wo ist der Event-handler? -->
+
+Zuweisung des Event-handlers erfolgt in separatem Code:
+1. Über die id eine Referenz auf das Element besorgen
+2. Code des Event-handlers in Funktion implementieren
+   (auch anonyme Funktion ist möglich)
+3. Event-handler-Funktion an die zum Event gehörende Property des Elements zuweisen
+
+function init(){
+    /* init DOM Level 0 event handler */
+    let button = document.getElementById("myButtonLevel0");
+    button.onclick = function(event){
+    alert(`${this}
+        this.id: "{this.value}"
+        this.value: "{this.value}"
+        event: "${event}"
+        this.form.foo.value: "${this.form.foo.value}"
+        this.form.method: "${this.form.method}"
+        this.form.action: "${this.form.action}"
+        document.title: "${document.title}"`);
+    }
+}
+
+Frage: Wie/wann wird init() aufgerufen?
+
+init-Code aufrufen
+- Die Funktion init wird z.B. nach dem Laden der Seite über einen load-Event aufgerufen:
+
+<body onload="init()">
+(eigentlich schlecht -> JS-Code/Event-handler in HTML-Seite)
+
+oder besser durch Setzen des Event-handlers innerhalb des JS-Codes:
+window.onload = init;
+
+Bemerkungen:
+Der Event-handler
+-> steht erst nach Ausführung der init-Funktion zur Verfügung
+-> wird in dem Scope des Elements ausgeführt
+   (this verweist auf das auslösende HTML-Element)
+
+-> kann durch Zuweisen von null an die entsprechende Property des Elements wieder entfernt werden
+
+11.3 Eventfluss (Event Flow)
+
+Frage: ZU welchem Teil der Webseite gehört der Click-Event auf den rot markierten Link?
+<html>
+    <head>...</head>
+    <body>
+        <h1> Testing Events in JavaScript </h1>
+        <h2> Even Flow </h2>
+        <div id="eventflow">
+            <p> First Paragraph </p>
+            <ul>
+                <li> one </li>
+                <li> <a href="javascript:click()"> a link </a> </li>
+            </ul>
+        </div>
+    </body>
+</html>
+
+Antwort: Neben Link werden auch die umschließenden Elemente li, ul, div, body und das html-Dokument
+selbst angeklickt!
+
+Welches der Elemente soll den Klick auswerten?
+
+- Eventfluss (Event Flow): Beschreibt Reihenfolge, in der ein Event die betroffenen Elemente erreicht!
+- Es gibt beide entgegengesetzte Vorschläge:
+    -> Event Bubbling
+    -> Event Capturing
+    - werden beide in der Spezifikation von DOM Level 2 zusammengefasst
+
+Event Bubbling
+- Idee des Event Bubbling:
+  Jeder Event startet am tiefst möglichen Element des Dokuments,
+  - und steigt zum obersten Element (dem Dokument selbst)
+  -> Event Bubbling des Beispiels:
+  1. a
+  2. li
+  3. ul
+  4. div
+  5. body
+  6. html-Dokument
+
+Event Capturing
+- Idee des Event Capturing:
+  Jeder Event vom obersten umschließenden gefangen
+  und zum innersten Element weitergereicht
+
+  Dadurch ist ein Abfangen des Events und Auslösen von Aktionen möglich,
+  bevor der Event beim eigentlichen Zielknoten ankommt!
+
+  Event Capturing des Beispiels:
+
+1. html-Dokument
+2. ...
+3. li
+4. a
+
+DOM Eventfluss
+- DOM Level 2 spezifiziert für den Eventfluss drei Phasen:
+1. Event Capturing (Absteigen im Dokument)
+2. Target (Bearbeiten des Zielelements)
+3. Event Bubbling (Aufsteigen im Dokument)
+
+Aktuelle Browser sollten diesen Eventfluss implementieren
+
+11.4 Dom Level 2-Event-handler
+
+Nachteile: des bisherigen HTML- und Dom Level 0-Event-handlers:
+ -> jedem Event kann maximal eine Funktion zugewiesen werden
+ -> keine gezielte Ausnutzung des Eventflusses möglich
+    (nur "Target"-Phase wird verwendet)
+
+Abhilfe: Das Zuweisen/Entfernen von Event-handlern erfolgt nicht mehr durch das direkte
+         Zuweisen an die Property
+
+         Stattdessen verfügt jedes Element über die beiden Methoden
+         - addEventListener &
+         - removeEventListener
+
+- Parameter der Funktionen addEventListener und
+                           removeEventListener
+
+1. Name des Events (als Zeichenkette; ohne Präfix on)
+2. auszuführende Funktion (function)
+3. boolescher Wert zur Angabe des Eventflusses:
+    true: Behandlung während der Capturing-Phase
+    false: Behandlung während der Bubbling-Phase (default)
+
+    Beispiel:
+    let button = document.getElementbyId("myButtonLevel2");
+    let eventHandler = function(event){ ... };
+    button.addEventListener("click", eventHandler, false);
+
+init-Code
+- Zum Aufrufen einer init-Funktion ersetze den HTML-Eventhandler innerhalb von Html
+    <body onload="init()">
+
+    bzw. den Level 0-Eventhandler
+    window.onload = init;
+
+    durch den Level 2-Event-handler außerhalb von HTML
+
+    window.addEventListener("load", init);
+
+Beachte
+- load in document wird ausgelöst, wenn das Dokument (DOM) geladen ist;
+  evtl. sind Bilder aber noch nicht (vollständig) geladen.
+
+- load in window wird ausgelöst, wenn die gesamte Seite (einschließlich z.B. aller Bilder)
+  geladen wurde.
+
+- load besitzt keine bubble-Phase!
+
+Beachte: Identifizierung des Eventhandlers in
+            addEventListener und
+            removeEventListener
+         geschieht über eine Referenz, auf die als Parameter übergebene function:
+
+- Beispiel:
+  let eventHandler = function(event){
+    ...
+  };
+
+  button.addEventListener("click", eventHandler, false);
+  ...
+  button.removeEventListener("click", eventHandler, false);
+
+- Beim Entfernen von Eventhandler: Eventhandler nicht als anonyme Funktion übergeben
+
+  button.addEventListener("click", function(){...}, false);
+  ...
+  button.removeEventListener("click", function(){...}, false);
+
+
+Das Event-Objekt
+- Wichtige Properties von Event:
+
+  -> target: das Element, das den Event ausgelöst hat
+  -> currentTarget: das Element, dessen Eventhandler gerade ausgeführt wird
+  -> eventPhase: aktuelle Phase im Eventfluss;
+        1: Capturing Phase
+        2: "at target"
+        3: Bubbling Phase
+  -> type: Typ des ausgelösten Events
+  -> view: Verweis auf das window-Object, in dem der Event ausgelöst wurde
+
+- Wichtige Funktionen von Event:
+
+  -> preventDefault(): Standardverhalten des Events wird aufgehoben (siehe später z.B. Dragging)
+  -> stopPropagation(): Event wird zu keinem anderen als dem aktuellen Objekt weitergereicht
+  -> stopImmediatePropagation(): Event wird weder zu anderen Objekten,
+     noch zu anderen Eventhandlern desselben Objekts weitergereicht
+
+11.6 Weitere Event-Typen
+- UI-Events
+  UI-Events werden vom Benutzer oder vom System ausgelöst, z.B.:
+  -> load: Laden einer Seite ist abgeschlossen, betrifft window
+  -> error: JS-Fehler, betrifft window
+  -> resize: Ändern der Größe, betrifft window
+  -> select: Text wurde ausgewählt in input oder textarea
+
+- Fokus-Events
+  -> blur: Fokus des Elements wird verlassen
+  -> Element bekommt Fokus
+
+- Maus-Events
+  -> click, dblclick: Einzel- oder Doppelklick
+  -> mousedown, mouseup: Drücken bzw. Loslassen einer Maustaste
+  -> mouseenter, mouseover, mouseout: Berühren oder Verlassen eines Elements
+  -> mousemove: Bewegen der Maus über einem Element
+
+Noch mehr Events
+- Weitere Events sind vorhanden, z.B. für:
+    -> Tastaturaktionen
+    -> Aktionen auf Touch Screens
+    -> Aktionen in Kontextmenüs
+    -> Gestenerkennung
+    -> Lage- und Beschleunigungsändernugen
+       (deviceorientation, devicemotion)
+    -> ...
+
+12 Selektieren von Dokumentknoten
+- Bisher: Knoten innerhalb des Dokuments anhand:
+            -> getElementById() oder
+            -> getElementByTagName()
+            Beispiele:
+            let ul = document.getElementById("liste");
+            ...
+            let items = document.getElementsByTagName("li");
+            for(let item of items){
+                doSomethingWith(item);
+            }
+- 12.1 Bemerkungen zu NodeList
+    -> Funktion getElementsByTagName() liefert eine Containerklasse vom Typ Nodelist:
+        - NodeList: besitzt Attribut length zur Abfrage oder Anzahl der Einträge &
+                    item(i) zum Auslesen des i-tem Elements
+                    (in JS auch Zugriff über Arraynotation [i] möglich).
+        - NodeList: besitzt "live"-Eigenschaft:
+                    Ändernugen in der Dokumentenstruktur sind sofort in allen betroffenen Instanzen
+                    von NodeList sichtbar.
+
+- Beispiel zur "live"-Eigenschaft
+  Aufgabe:
+  1. Erstelle ein HTML-Dokument, das eine Liste mit mehreren li-Elementen enthält.
+  2. Erstelle mittels getElementsByTagName() eine NodeList mit allen li-Elementen
+     der Seite und gib sie aus
+  3. Füge der Liste ein weiteres li-Element hinzu und gib die Einträge
+     der vorigen NodeList-Instanz erneut aus
+
+  Ergebnis:
+  Auch ohne einen erneuten Aufruf von getElementsByTagName() enthält die NodeList
+  das neu hinzugefügte Listenelement!
+________________________________________________________________________________
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title> Beispiel mit NodeList </title>
+    </head>
+    <body>
+        <script src="nodeList.js"> </script>
+        <ul>
+            <li> A </li>
+            <li> B </li>
+            <li> C </li>
+            <li> D </li>
+            <li> Zusätzlich hinzugefügt 1 </li>
+            <li> Zusätzlich hinzugefügt 2 </li>
+            <li> Zusätzlich hinzugefügt 3 </li>
+        </ul>
+    </body>
+</html>
+________________________________________________________________________________
+window.onload = function(){
+    nodeList();
+};
+
+function nodeList(){
+
+    let nodeList = document.getElementsByTagName("li");
+    for(let i = 0; i < nodeList.length; i++){
+        alert("Mit item(i): " + nodeList.item(i).textContent);
+    }
+
+    for(let i = 0; i < nodeList.length; i++){
+        alert("Mit [i]: " + nodeList[i].textContent);
+    }
+}
+________________________________________________________________________________
+
+- Nachteile von getElementbyId() und getElementsByTagName():
+  -> Teilweise "umständliche" Notation im Vergleich zu CSS-Selektoren; z.B. für Klassen
+     (Notation: .foo für class="foo") oder Ids
+     (Notation: #foo für id="foo")
+  -> "live"-Eigenschaft wird gar nicht immer benötigt;
+     das Update der Listen kostet aber Rechenzeit
+
+- 12.2 Die Selector-API
+  -> Unterstützt CSS-Selectoren (siehe folgende Beispiele)
+  -> Stellt Methoden querySelector (liefert nur ersten Treffer) und
+     querySelectorAll (liefert alle Treffer) bereit
+
+  -> Die Ergebnismenge von querySelectorAll besitzt keine "live"-Eigenschaft
+  -> Auf das i-te Element der Ergebnismenge von querySelectorAll kann wie gewohnt über item(i)
+     oder über die Arraynotation [i] zugegriffen werden
+  -> length liefert die Anzahl der selektierten Elemente
+
+  Beispiele zur Selector-API
+  -> das body-Element des Dokuments:
+  let body = document.querySelector("body");
+
+  -> das erste Element mit der ID foo:
+  let idFoo = document.querySelector("#foo");
+
+  -> alle Elemente der Klasse foo(class="foo"):
+  let classFoo = document.querySelectorAll(".foo");
+
+  -> das erste Bild der Klasse gnats im body:
+  let imgGnats = document.body.querySelector("img.gnats");
+
+  -> alle strong-Elemente innerhalb von p-Elementen:
+  let strongP = document.querySelectorAll("p strong");
+
+- 12.3 XPath API
+  ________________________________________________________
+  Beispiel: Suche das Element mit dem id-Attribut mylist;
+            das Ergebnis soll ein einzelner Knoten (Ergebnistyp FIRST_ORDERED_NODE_TYPE) sein:
+  let mylist = document.evaluate("//*[@id=´mylist´]",
+             document, null,
+             XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+  alert(mylist.singleNodeValue);
+  ________________________________________________________
+  Beispiel: Suche alle li-Elemente;
+            die Ergebnismenge soll iterierbar sein (ORDERED_NODE_ITERATOR_TYPE).
+            Wird der DOM während der Iteration verändert, wird ausgelöst:
+            NS_ERROR_DOM_INVALID_STATE_ERR
+  let items = document.evaluate("//li", document, null,
+  XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+
+  try{
+    let thisItem = items.iterateNext();
+    while(thisItem){
+        alert(thisItem.nextContent);
+        thisItem = item
+    }
+  } catch(ex){
+    alert(ex);
+  }
+  ________________________________________________________
+  Beispiel: Suche alle li-Elemente;
+            die Ergebnismenge soll als statischer Schnappschuss gespeichert werden
+            (Ergebnistyp ORDERED_NODE_SNAPSHOT_TYPE).
+            Der DOM darf während der Bearbeitung des Schnappschusses verändert werden:
+
+            let items = document.evaluate("//li", document, null,
+            XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+  for(let i = 0; i < items.snapshotLength; i++){
+    alert(items.snapshotItem(i).textContent);
+  }
+  ________________________________________________________
+
+13 "Drag and Drop" auf Webseiten
+- Aktuelle Browser (z.B. Firefox) unterstützen automatisch
+das Verschieben von Texten und Bildern innerhalb der Webseite (und zwischen Webseiten).
+
+Ausgelöste Events für das verschobene Objekt:
+- dragstart: Verschieben des betroffenen Elements beginnt
+- drag: Verschieben des Elements läuft...
+- dragend: Verschieben des betroffenen Elements ist beendet
+
+Ausgelöste Events für das Zielobjekt:
+- dragenter: Über das betroffene Element wird "etwas" geschoben
+- dragover: Das Verschieben über dem Element geht weiter...
+- dragleave: Das Verschieben von "etwas" über das betroffene Element wird dadurch beendet,
+             dass es wieder von dem Element weggeschoben wird
+- drop: Das Verschieben von "etwas" über das betroffene Element wird durch "Fallenlassen" auf dem Element beendet
+
+Ändern des Standardverhaltens
+- Standardmäßig werden alle Events ausgelöst, für verschobene Texte und Bilder.
+  Änderungen im Dokument finden jedoch nicht statt, da das Standardverhalten kein drop erlaubt
+  (außer auf Eingabefelder).
+- Durch Modifizieren der entsprechenden Eventhandler kann das Verhalten geändert werden!
+- Durch Setzen des Attributs draggable="true" kann jedes Element der Webseite verschoben werden
+  (nicht nur Texte oder Bilder)
+
+Das dataTransfer-Objekt
+- Daten, die zu verschieben sind, werden in einem dataTransfer-Objekt abgelegt;
+  der Zugriff darauf erfolgt über zwei Methoden:
+
+  -> setData(type, data):
+     speichert die Daten des verschobenen Objekts;
+     type spezifiziert den Mime Type der Daten (z.B. text/plain),
+     date enthält die entsprechenden Daten (z.B. den Text oder eine ID der Quelle)
+
+  -> getData(type):
+     liest die Daten in dem entsprechenden Mime Type aus
+
+Aufgabe (1):
+Auf einer Webseite sollen die Inhalte von markierten Elementen (z.B. durch eigene Klasse class="draggable")
+kopiert und im "Zielbereich" der Seite in eine Liste (z.B. id="destination") eingefügt werden.
+________________________________________________________
+Vorbereiten der Webseite
+<html>
+    <head>
+        <link rel="stylesheet" href="dragAndDrop.css"></link>
+        <script type="text/javascript" src="dragAndDrop01.js"></script>
+    </head>
+    <body>
+        <h2 class="draggable">Dragging Text</h2>
+        <ul>
+            <li class="draggable"> A first text </li>
+            <li class="draggable"> Second text </li>
+            <li class="draggable"> Another text </li>
+        </ul>
+        <h2> Destination </h3>
+        <ul id="destination"> <span> drop it here...</span> </ul>
+
+        <h2> Output Devision </h3>
+        <div id="output"></div>
+    </body>
+</html>
+________________________________________________________
+Optional: Etwas CSS
+- Verwende CSS, zum Kennzeichnen...
+  -> aller Elemente mit dem Attribut draggable="true"
+  -> des Zielobjekts
+  /* file dragAndDrop.css */
+
+  *[draggable=true]{
+    color: red
+  }
+
+  #destination{
+    color: blue
+  }
+  ________________________________________________________
+
+Ändern der Eventhandler
+
+<!-- Implementierung von Drag-and-Drop-Funktionen auf einer Webseite -->
+
+1. Zunächst wird ein Event-Handler für das Laden der Seite festgelegt:
+________________________________________________________
+window.addEventListener("load", init);
+
+// Die init-Funktion wird ausgeführt, wenn die Seite vollständig geladen ist (load-Event)
+________________________________________________________
+
+2. In der init-Funktion werden Event-Handler für Elemente der Klasse "draggable" initialisiert.
+   Diese Elemente sollen per Drag-and-Drop verschoben werden können
+________________________________________________________
+function init(){
+    /* init event handler for all sources */
+    let draggables = document.querySelectAll(".draggable");
+    for(let element of draggables){
+        element.draggable = true;
+        element.addEventListener("dragstart", function(event){
+            event.dataTransfer.effectAllowed = "copy"; // specify effect
+            event.dataTransfer.setData("text/plain", event.target.innerHTML);
+            appendToOutput(
+                `${event.type} (${event.target}: ${event.target.innerHTML})`
+            );
+        }, false);
+        element.addEventListener("dragend", function(event){
+            event.preventDefault();
+            appendToOutput(`${event.type} (${event.target}
+            effect performed: "${event.dataTransfer.dropEffect}")`);
+        }, false);
+    }
+}
+
+// - Zuerst werden alle Elemente der Klasse "draggable" ausgewählt und die Eigenschaft
+//  `draggable` auf true gesetzt: Somit werden sie als ziehbare Elemente gekennzeichnet.
+// - Dann werden Event-Handler für "dragstart" und "dragend" festgelegt:
+//   -> Im "dragstart"-Event-Handler wird das event.dataTransfer-Objekt verwendet, um den Effekt
+//      und die Daten für den Drag-and-Drop-Vorgang festzulegen.
+//      Hier wird der Effekt auf "copy" gesetzt, und der Textinhalt des Elements wird als Daten gespeichert.
+//   -> Im "dragend"-Event-Handler wird das Standardverhalten des Browsers verhindert
+//      (`.preventDefault()`), und Informationen über den abgeschlossenen Vorgang werden
+//      in das Ausgabe-Div geschrieben.
+________________________________________________________
+
+3. Dann werden Event-Handler für das "dragover", "dragenter", "dragleave" und "drop" Event
+für das Zielobjekt (Element mit der ID "destination") festgelegt.
+Dieses Objekt ist der Bereich, in den die Elemente per Drag-and-Drop verschoben werden können.
+________________________________________________________
+
+let destination = document.getElementById("destination");
+destination.addEventListener("dragover", function(event){
+    event.preventDefault(); // allow dropping here!
+    event.dataTransfer.dropEffect = "copy"; // confirm the effect
+    appendToOutput(event.type);
+}, false);
+destination.addEventListener("dragenter", function(event){
+    event.preventDefault(); // allow dropping here!
+    event.dataTransfer.dropEffect = "copy"; // confirm the effect
+    appendToPutput(event.type);
+}, false);
+destination.addEventListener("dragleave", function(event){
+    event.preventDefault();
+    appendToOutput(event.type);
+}, false);
+destination.addEventListener("drop", function(event){
+    event.preventDefault();
+    let data = event.dataTransfer.getData("text/plain");
+    // insert new li element
+    let li = document.createElement("li");
+    li.appendChild(document.createTextNode(data));
+    destination.appendChild(li);
+    appendToOutput(`${event.type} (${data})`);
+}, false);
+
+// - Event-Handler für "dragover" und "dragenter" sorgen dafür, dass das Standardverhalten
+// für Ziehen und Ablegen in diesem Bereich untertrückt wird, und der Effekt wird
+// auf "copy" festgelegt.
+// - Event-Handler für "dragleave" wird aufgerufen, wenn das Element den Bereich verlässt.
+// - Event-Handler für "drop" wird aufgerufen, wenn das Element in den Bereich gezogen und abgelegt wird.
+//   Hier werden die Daten aus dem `event.dataTransfer`-Objekt abgerufen und ein neues "li"-Element
+//   mit diesen Daten erstellt und dem Ziel hinzugefügt.
+________________________________________________________
+4. Am Ende der "init"-Funktion gibt es eine Hilfsfunktion namens `appendToOutput`, die verwendet wird,
+   um Text zum Ausgabe-Div hinzuzufügen.
+
+Der ganze Code ermöglicht Ziehen und Ablegen von Elementen mit der Klasse "draggable" in den Zielbereich
+mit der ID "destinaton".
+Während des Vorgangs werden Informationen über die Ereignisse und den abgeschlossenen Vorgang
+in einem Ausgabe-Div angezeigt.
+________________________________________________________
+
+Lösung für Aufgabe (1):
+
+window.addEventListener("load", init);
+
+function init(){
+    let draggables = document.querySelectorAll(".draggable");
+    for(let element of draggables){
+        element.draggable = true;
+
+        element.addEventListener("dragstart", function(event){
+            event.dataTransfer.effectAllowed = "copy";
+            event.dataTransfer.setData("text/plain", event.target.innerHTML);
+            appendToOutput(
+                `${event.type} (${event.type}: ${event.target.innerHTML})`
+            );
+        }, false);
+
+        element.addEventListener("dragend", function(event){
+            event.preventDefault();
+            appendToOutput(`${event.type} (${event.target}
+            effect performed: "${event.dataTransfer.dropEffect}")`);
+        }, false);
+    }
+
+    let destination = document.getElementById("destination");
+
+    destination.addEventListener("dragover", function(event){
+        event.preventDefault();
+        event.dataTransfer.dropEffect = "copy";
+        appendToOutput(event.type);
+    }, false);
+
+    destination.addEventListener("dragenter", function(event){
+        event.preventDefault();
+        event.dataTransfer.dropEffect = "copy";
+        appendToOutput(event.type);
+    }, false);
+
+    destination.addEventListener("dragleave", function(event){
+        event.preventDefault();
+        appendToOutput(event.type);
+    }, false);
+
+    destination.addEventListener("drop", function(event){
+        event.preventDefault();
+        let data = event.dataTransfer.getData("text/plain");
+        let li = document.createElement("li");
+        li.appendChild(document.createTextNode(data));
+        destination.appendChild(li);
+        appendToOutput(`${event.type} (${data})`);
+    }, false);
+}
+
+function appendToOutput(text){
+    let output = document.getElementById("output");
+    if(output){
+        output.innerHTML += text + "<br>";
+    }
+}
+
+________________________________________________________
+
+Aufgabe (2):
+Wie vorige Aufgabe, jedoch sollen die bewegten Elemente nicht kopiert,
+sondern komplett in den "Zielbereich" verschoben werden.
+
+ÄNDERN DER EVENTHANDLER FÜR DAS VERSCHIEBEN:
+
+const MY_TYPE = "text/mytype";
+
+function init(){
+    /* init event handler for all sources */
+    let draggables = document.querySelectorAll(".draggable");
+    for(let element of draggables){
+        element.draggable = true;
+        element.addEventListener("dragstart", function(event){
+            event.dataTransfer.effectAllowed = "move";
+            event.dataTransfer.setData(MY_TYPE, "event.target.outerHTML");
+            appendToOutput(`${event.tyoe} (${event.target}`);
+        }, false);
+    }
+
+    destination:addEventListener("drop", function(event){
+        event.preventDefault();
+        let data = event.dataTransfer.getData(MY_TYPE);
+        if(data){
+            let template = document.createElement(´template´);
+            template.innerHTML = data.trim();
+            let dataElement = template.content.firstChild;
+            dataElement.draggable = false;
+            destinationUL.appendChild(dataElement);
+            appendToOutput(`${event.type} (${data})`);
+        } else {
+            appendToOutput(`${event.type}; no data found data transfer`);
+        }
+    }, false);
+
+    // finally remove the dragged item from its parent
+    element.addEventListener("dragend", function(event){
+        event.preventDefault();
+        if(event.dataTransfer.dropEffect == "move"){
+            let element = event.target;
+            element.parentNode.removeChild(element);
+            console.log(`dragend: element removed from its parent`);
+        }
+    }, false);
+}
+________________________________________________________
+Lösung für Aufgabe (2):
+
+const MY_TYPE = "text/mytype";
+
+function init() {
+    let draggables = document.querySelectorAll(".draggable");
+    let destinationUL = document.getElementById("destination");
+
+    for (let element of draggables) {
+        element.draggable = true;
+
+        element.addEventListener("dragstart", function(event) {
+            event.dataTransfer.effectAllowed = "move";
+            event.dataTransfer.setData(MY_TYPE, event.target.outerHTML);
+            appendToOutput(`${event.type} (${event.target.outerHTML})`);
+        }, false);
+
+        element.addEventListener("dragend", function(event) {
+            event.preventDefault();
+            if (event.dataTransfer.dropEffect === "move") {
+                element.parentNode.removeChild(element);
+                appendToOutput(`dragend: element removed from its parent`);
+            }
+        }, false);
+    }
+
+    destinationUL.addEventListener("drop", function(event) {
+        event.preventDefault();
+        let data = event.dataTransfer.getData(MY_TYPE);
+        if (data) {
+            let template = document.createElement('template');
+            template.innerHTML = data.trim();
+            let dataElement = template.content.firstChild;
+            dataElement.draggable = false;
+            destinationUL.appendChild(dataElement);
+            appendToOutput(`${event.type} (${data})`);
+        } else {
+            appendToOutput(`${event.type}; no data found in data transfer`);
+        }
+    }, false);
+
+    destinationUL.addEventListener("dragover", function(event) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = "move";
+    }, false);
+
+    // ... Behalten Sie die restlichen Event-Handler für 'dragenter' und 'dragleave' bei, falls erforderlich.
+}
+
+function appendToOutput(text) {
+    let output = document.getElementById("output");
+    if (output) {
+        output.innerHTML += text + "<br>";
+    }
+}
+
+window.addEventListener("load", init);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

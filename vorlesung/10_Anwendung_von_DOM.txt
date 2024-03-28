@@ -1,0 +1,267 @@
+10 Anwendung von DOM: Dynamisches HTML
+
+- HTML-Dokumente als DOM auffassen
+- Web-Browser besitzen Programmierschnittstelle, - durch JavaScript
+- In der Regel - spezifizierten DOM-Methoden implementiert - Zugriff auf Dokument möglich
+- Dadurch, - Inhat des Dokuments durch JS dynamisch verändern
+- Änderungen erfolgen im DOM im Browser ohne Neuladen des Dokuments vom Server
+
+Voraussetzungen für das weitere Vorgehen
+- Verwendung von modernem Webbrowser mit "ordentlicher" JavaScript-Implementierung
+    (Standards werden eingehalten,- z.B. aktuelle Version von FireFox)
+- Beschreibung der HTML-Dokumente durch XHTML (Ermöglicht Nutzung von Wohlgeformtheit
+    und Validierungsmöglichkeit aus XML-Welt).
+
+=> Damit ist möglich: HTML-Dokumente im Browser dynamisch verändern
+
+10.1 Exkurs JavaScript
+- JavaScript - entwickelt von Netscape: Mehr Funktionalitäten in Webseiten
+- JavaScript ist standadisiert: Version bezeichnet als EXMAScript (ES): ES 14
+- JavaScript nicht mit Java verwechseln
+
+Einige Eigenschaften von JavaScript
+
+    JavaScript ...
+    - ... Einsatz im Client (d.h. im Webbrowser) für Manipulation von DOM
+    - ... interpretierte Programmiersprache (d.h. Quellcode liegt zur Ausführungszeit vor und wird direkt ausgeführt)
+    - ... eine Hochsprache mit Merkmalen von Objektorientierung
+    - ... ungetypte Variablen werden verwechselt
+
+"Historische" oder "moderne" Variante?
+
+    - JavaScript lag/liegt unter Sprachänderungen; alte Programme sollten jedoch dennoch funktionieren
+    - viele moderne Features standardmäßig ausgeschaltet
+    - durch Anweisung "use strict"; als erste Codezeile, - Aktivierung von modernem Variante
+        Achtung: Verhalten beim alten Code verändert sich teilweise
+        (z.B. strengere Regeln für Zugriff auf nicht deklarierte Variablen)
+    - Verwendung moderner Variante on der Vorlesung
+
+Einbinden von JavaScript in HTML
+    - Einbinden von JavaScript-Code durch script-Elemente
+        direkt im head oder durch Verweis auf externe JavaScript-Dateien
+
+Beispiel:
+
+<?xml version="1.0" encoding"UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Exkurs JavaScript</title>
+        <script type="text/javascript">
+            function inline() {alert("calling function inline");}
+        </script>
+        <script type="text/javascript" src="exkursJS01.js">
+        </script>
+    </head>
+    <body> ... </body>
+</head>
+
+Funktionen in JavaScript
+- Angabe von formalen Parametern ohne Angabe von Typs
+- Anzahl formaler, sowie aktueller Funktionsparameter kann ungleich sein
+- Aus HTML JavaScript-Funktionen, z.B. über spezielle <a>-Verweise unter Angabe des Protokolls javascript aufrufen:
+    <body>
+        <h2>Some Experiments</h2>
+        Calling the JavaScript
+        function <a href="javascript:inline()">inline</a>
+    </body>
+
+  oder z.B. über onclick-Attribut eines input-Buttons innerhalb eines form-Elements:
+  <body>
+    <form action="#">
+        <input type="button"
+               value="Calling function inline()" onclick="inline()"/>
+    </form>
+  </body>
+
+  Neben onclick: auch weitere "EventHandler": z.B. onmouseover, onmouseout, onblur, ...;
+  Angabe von Protokoll javascript optional
+
+Bemerkungen zu Funktionsparametern
+- Aktueller Typ von Variablen oder Parametern bestimmen durch typeof
+- Zugriff auf aktuelles Parameter z.B. über implizit vorhandenen Parameter arguments möglich:
+    function test(){
+        alert("called function test, first argument is " + arguments[0] + ", type is " + typeof arguments[0]);
+    }
+
+    Achtung: arguments sieht aus wie ein Array, ist aber keines (manche Eigenschaften fehlen)!
+
+- Falls Anzahl von aktuellen Parametern unbekannt:
+    statt arguments sogenannte "Rest-Parameter" verwenden:
+
+    function testRest(first, ...rest){
+        alert('first: ${first}, rest: ${rest}');
+    }
+
+    hier werden mit Ausnahme des ersten Parameters first
+    alle weiteren Parameter des Funktionsaufrufs (falls vorhanden) in dem Array rest gesammelt.
+
+Beispiel: Zugriff auf die aktuellen Parameter einer Funktion(1)
+
+function test(...args){
+    alert('called function test:
+        first arguments is '${args[0]}'
+        of type '${typeof args[0]}'');
+}
+
+Was liefern die folgenden Aufrufe?
+<body>
+    Calling the above JavaScript function <code>test</code>
+    with and without arguments:
+    <a href="javascript:test('111')">test('111')</a>
+    <a href="javascript:test(111)">test(111)</a>
+    <a href="javascript:test()">test()</a>,
+</body>
+
+Beispiel: Zugriff auf die aktuellen Parameter einer Funktion(2)
+
+function testRest(first, ...rest){
+    alert(`first: ${first}, rest: ${rest}`);
+}
+
+Was liefern die folgenden Aufrufe?
+<body>
+    <a href="javascript:testRest(1)">?</a>
+    <a href="javascript:testRest(1, 2, 3)">??</a>
+    <a href="javascript:testRest()">???</a>
+</body>
+
+Bemerkungen zur Deklaration von Variablen
+- Schlüsselwort let deklariert eine Variable:
+    let foo = 7;
+    foo = "now it is a string";
+- const deklariert eine unveränderliche Konstante:
+    const foo = 7;
+    foo = 12; // Runtime Error!
+
+- Variablen auch durch var deklarieren (hat einen anderen Gültigkeitsbereich als let;
+    seit ES 6 nicht mehr verwenden
+- außerhalb von strict-Modus: Variablen auch implizit durch bloße Zuweisung vereinbaren
+
+Typ-Festlegung erfolgt erst nach Zuweisung
+    Gegeben sei folgender JavaScript-Code:
+
+    function f(value){
+        if(arguments.length === 0){
+            return "called f without arguments";
+        } else {
+            return "called f with parameter " + value + " of type " + typeof value;
+        }
+    }
+
+    function usingVariables(){
+        let i = 1; alert(i);
+        i = "Text"; alert(i);
+        i = f;
+        alert(i()); alert(i(16)); alert(i("17")); alert(i);
+    }
+
+    Was liefert der Aufruf der Funktion usingVariables?
+    1) 1
+    2) "Text"
+    3) "called f without arguments"
+    4) "called f with parameter 16 of type number"
+    5) "called f with parameter 17 of type string"
+    6) Den Quellcode der Funktion 'f'.
+
+ Primitive Typen in JavaScript
+
+ number: Nummerischer Typ für ganzzahlen, sowie für Gleitkommazahlen
+         d.h. alle Berechnungen werden als Gleitkommaoperationen durchgeführt!
+
+ let i = 0;
+ while(i != 10){
+    i += 0.1;
+ }
+ alert(`done`);
+
+ let a = 9999999999999999;
+ let b =  10000000000000000;
+ alert(`a != b: ${a!=b}`);
+
+string: - Für Darstellung von langen Zeichenketten
+        - Primitiver Datentyp (keine Objekte im Gegensatz zu Java)
+        - Können geschrieben werden als ("foo", ´foo´, `foo`).
+        - Durch Verwendung von "Backsticks" darf String über mehrere Zeilen erstrecken &
+          darf in ${...} Ausdrücke enthalten
+        - Länge eines Strings durch length (ohne runde Klammern) abfragen
+            let s1 = "foo"; console.log(`${s1.length}`); // -> 3
+            let s2 = ""; console.log(`${s2.length}`); // -> 0
+
+boolean: - Zur Darstellung der beiden logischen Werte true und false
+
+undefined: - Wert und Typ nicht definierter Variablen und nicht zugewiesener Werte:
+            let test;
+            console.log(`"${test}") of type "${typeof test}"`);
+            // "undefined" of type "undefined"
+
+null: Besonderer Wert (vom Typ object), der für Referenzen auf nicht existierende Objekt benutzt wird:
+    let head = null;
+    console.log(`type of head:` "${typeof head}"`);
+    // type of head: "object"
+
+JavaScript-Wrapper ”
+String“
+Welche Ausgabe liefert der JavaScript-Code:
+function testString() {
+let a = new String();
+alert("a: \"" + a + "\"");
+let b = new String("Hallo");
+alert("b: \"" + b + "\"");
+let c = new String(42);
+alert("c: \"" + c + "\"");
+let d = String;
+alert("d: \"" + d + "\"");
+let e = new d("foo");
+alert("e: \"" + e + "\"");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

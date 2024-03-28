@@ -1,0 +1,35 @@
+HTML Drag- und Drop-API
+
+- HTML Drag-and-Drop:
+  Ermöglicht Drag-and-Drop-Funktionalitäten in Webanwendungen innerhalb von Browsern
+
+- Benutzerinteraktionen:
+  Benutzer können dragbare Elemente mit Maus auswählen und zu einem droppable Element ziehen
+
+- Freigabe der Elemente:
+  Loslassen der Maustaste lässt das gezogene Element am Zielort fallen.
+
+- Visuelle Rückmeldung:
+  Während des Ziehens wird eine durchscheinende Kopie des Elements unter Mauszeiger dargestellt.
+
+- Anpassung:
+  Dragbare Elemente, Feedback, sowie droppable Elemente können angepasst werden
+
+- Implementierungsschnittstelle:
+  Beschreibung der notwendigen Schritte, um Drag-and-Drop in Anwendung zu implementieren
+
+- Interoperabilität:
+  Zusammenfassung der Kompatibilität und Interaktion der Schnittstelle.
+
+KONZEPTE UND NUTZUNG
+- Drag Events
+  HTML Drag-and-Drop nutzt DOM event model und drag events von mouse events
+  -> Drag-Operation beginnt:
+  Benutzer wählt Element aus
+  -> Operation geht weiter:
+  Benutzer zieht Element zum abfallenden Element
+  -> Operation endet:
+  Benutzer setzt gezogene Element frei
+
+- Während Drag-Operation: Mehrere Ereignistypen
+  -> Jeder Drag Event Typ hat zugehörigen Event-Handler:

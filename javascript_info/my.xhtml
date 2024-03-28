@@ -1,0 +1,1092 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <body>
+        <p>Before the script...</p>
+        <script>
+            "use strict";
+
+            // So könnte man den Code schreiben
+            alert("Hello");
+            [1, 2].forEach(alert);
+
+            //So sieht es die Engine
+            alert("Hello")[1, 2].forEach(alert);
+
+            function(){
+                'use strict';
+
+                // ... your code here ...
+            })()
+
+            // Erstellen einer Variablen:
+            // Variablen deklarieren
+            let message; // Variable message deklariert
+
+            // Zuweisen von Werten
+            // Zuweisungsoperator =, um Variable zu initialisieren
+            message = 'Hello';
+
+            // Zugriff auf den Wert der Variable, durch den Variablennamen
+            alert(message);
+
+            // Deklaration und Zuweisung kombinieren
+            let message2 = 'Hello2';
+            // Mehrere Variablen können hintereinander deklariert werden.
+            // Aufgrund der Lesbarkeit wird jedoch empfohlen, das einzeln zu machen.
+
+            // Namen von Variablen: Erste Buchstabe darf kein Ziffer sein
+            // Variablen-Namen sind case-sensitive: d.h. apple und APPLE sind unterschiedliche Variablen
+
+            // Reservierte Namen: Einige Namen sind reserviert: z.B.: let, class, return
+
+            // Konstanten: Unveränderliche Variablen deklarieren: Verwendung von const.
+            // Konstante Variablen können nach ihrer Initialisierung nicht neu zugewiesen werden.
+
+            /** Datentypen in JavaScript
+             * JS: dynamisch typisierte Sprache: Variablen haben keinen festen Datentyp
+             * Variable kann zu einem Zeitpunkt eine Zeichenfolge sein,
+             * zu einem anderen Zeitpunkt, eine Zahl speichern
+             */
+
+            let message3 = "Hello";
+            message3 = 123456;
+
+            /** JS hat acht grundlegende Datentypen
+             *  Number: Ganzzahlen-, sowie Gleitkommazahlen
+             *          beinhaltet spezielle numerische Werte:
+             *          Infinity, -Infinity, NaN (Not a Number)
+             *
+             *  BigInt: Für ganze Zahlen:
+             *          Größer als 2^53-1
+             *          Kleiner als -(2^53-1)
+             *
+             *  String: Für Textdaten,- entweder in einfachen, oder doppelten Anführungszeichen
+             *
+             *  Boolean: Hat zwei Werte: true oder false, für wahr oder falsch
+             *
+             *  Null: Eigenständiger Datentyp: Steht für nichts oder leer
+             *
+             *  Undefined: Eigenständiger Datentyp: Steht für nicht zugewiesen
+             *
+             *  Symbol: Wird verwendet,- um eindeutige Bezeichner für Objekte zu erstellen
+             *
+             *  Object: Für komplexere Datenstrukturen und Objekte
+             *
+             *  MATHEMATISCHE OPERATIONEN:
+             *  - Mathematische Operationen in JavaScript "sicher":
+             *      -> Sie führen nicht zu schwerwiegenden Fehlern
+             *          Im schlimmsten Fall führen Sie zu 'NaN'
+             *
+             *  VARIABLE DEKLARIEREN:
+             *  Wiederholte Deklaration von let ist ein Fehler
+             *  Variablen eindeutig und beschreibend benennen
+             *
+             *  VERWENDUNG VON 'typeof'
+             *  - Wird verwendet, um Typ eines Wertes zu bestimmen:
+             */
+
+                typeof 0 // "number"
+                typeof true // "boolean"
+                typeof "foo" // "string"
+
+            /** 1. Alert('alert')
+             *  Zeigt ein modales Fenster mit einer Nachricht "OK"
+             *  Modal: Benutzer kann mit Seite nicht arbeiten, solange nicht ok gedrückt wird
+             *
+             *  2. Prompt('prompt')
+             *  Verwendung: 'result = prompt("Frage", "Standardwert");
+             *  Zeigt ein modales Fenster mit einer Nachricht "Frage", sowie einem Eingabefeld "Standardwert"
+             *
+             *  Rückgabewert:
+             *  Gibt eingegebenen Text zurück, oder Null, wenn Eingabe abgebrochen wird
+             *
+             *  Standardwert: Zweite Parameter "Stanrdardwert" ist optional.
+             *  Wird als Anfangswert im Eingabefeld angezeigt.
+             *
+             *
+             *  3. Confirm('confirm')
+             *  Verwendung: 'result = confirm("Frage");
+             *  Zeigt ein Fenster mit Nachricht "Frage" und zwei Schaltflächen:
+             *  "OK" und "Abbrechen"
+             *  Rückgabewert: "true" für ok und "false" für abbrechen
+             *
+             *  Zusammenfassung:
+             *  -   Alle drei Methoden (alert, prompt, confirm) sind modal und unterbrechen Interaktion
+             *  mit Rest der Webseite, bis Fenster geschlossen wird.
+             *
+             */
+
+            /** String-Konventierung
+             *  - Automatische Konvertierung: Zum Beispiel durch
+             *      alert(value), -> value wird in String umgewandelt
+             *
+             *  - Explizite Konvertierung:
+             *      String(value): z.B.: String(true) wird zu "true"
+             *      Anmerkung: Die meisten Werte konvertieren auf eine offensichtliche Weise
+             *      Es wird null zu "nulL"
+             *              false zu "false"
+             *
+             *  Numerische Konvertierung
+             *  - Automatische Konvertierung: Findet in mathematischen Operationen statt:
+             *      "6" / "2" zu 3 -> Die Strings werden in Zahlen umgewandelt
+             *
+             *  - Explizite Konvertierung:
+             *      Number(value) -> Number("123") wird zu 123
+             *      Regeln:
+             *          - undefined wird zu NaN
+             *          - null wird zu 0
+             *          - true wird zu 1, false wird zu 0
+             *          - Strings werden gelesen und in Zahlen umgewandelt,
+             *              Leerzeichen werden ignoriert
+             *              Nicht numerische Zeichenfolgen werden zu NaN
+             *
+             *         alert( Number(" 123 ") ); // 123
+             *         alert( Number("123z") ); // NaN (error reading a number at "z")
+             *         alert( Number(true) ); // 1
+             *         alert( Number(false) ); // 0
+             *
+             *
+             * Boolesche Konvertierung
+             * - Automatische Konvertierung: Geschieht in logischen Operatoren
+             * - Explizite Konvertierung:
+             *      Boolean(value)
+             *      Regeln:
+             *          - Werte, die "leer" erscheinen, z.B.: (0, null, undefined NaN, "") werden zu
+             *              false
+             *          - Alle anderen Werte werden zu true
+             *
+             *
+             *        alert( Boolean(1) ); // true
+             *        alert( Boolean(0) ); // false
+             *        alert( Boolean("hello") ); // true
+             *        alert( Boolean("") ); // false
+             *        alert( Boolean(" ") ); // true
+             *
+             * Besonderheiten und Hinweise
+             * - String "0" und Strings mit nur Leerzeichen, z.B. " ", werden als true bewertet
+             * - undefined wird bei numerischer Konvertierung zu NaN, nicht zu 0
+             * - Objekte werden in diesem Kontext nicht behandelt
+             */
+
+
+            /** Grundlegende Operatoren - Mathematik
+             * - Operanden: Werte, auf die Operatoren angewendet werden:
+             *  Z.B.: "% * 2" sind 5 und 2 Operanden
+             *
+             *  Unary Operator: Ein Operator mit nur einem Operanden, wie das Minuszeichen in
+             *      "-x".
+             *      ____________________
+             *      let x = 1;
+             *      x = -x;
+             *      alert(x); // -1, unary negation was applied
+             *      ____________________
+             *
+             *  Binary Operator: Ein Operator mit zwei Operanden, wie das Minus in y - x
+             *      ____________________
+             *      let x = 1, y = 3;
+             *      alert(y - x); // 2, binary minus subtracts values
+             *      ____________________
+             *
+             *  Mathematische Operationen
+             *  - Addition(+),
+             *  - Substraktion(-)
+             *  - Multiplikation(*)
+             *  - Division(/)
+             *  - Restoperator(%)
+             *
+             *  alert(5 % 2); // 1, the remainder of 5 devided by 2
+             *  alert(8 % 3); // 2, the remainder of 8 devided by 3
+             *  alert(6 % 2); // 0, the remainder of 6 devided by 2
+             *
+             *  Exponentiation(**) - Potenzrechnung
+             *  alert(2 ** 2); // 4
+             *  alert(2 ** 3); // 8
+             *  alert(2 ** 4); // 16
+             *
+             *  String-Konkatenation mit dem Plus-Operator(+)
+             *  - Verbindet zwei Strings oder wandelt Zahlen in Strings um
+             *
+             *  let s = "my" + "string";
+             *  alert(s); // mystring
+             *  alert('1' + 2); // "12"
+             *  alert(2 + '1'); // 21
+             *  alert(2 + 2 + '1'); // "41"
+             *  alert('1' + 2 + 2); // "122"
+             *
+             *  Numerische Konvertierung, Unary Plus(+)
+             *  - Konvertiert Strings in Zahlen
+             *  ____________________
+             *  let x = 1;
+             *  alert(+x); // 1
+             *  let y = -2;
+             *  alert(+y); // -2
+             *
+             *  // Converts non-numbers
+             *  alert(+true); // 1
+             *  alert(+""); // 0
+             *  let apples = "2";
+             *  let oranges = "3";
+             *  alert(+apples + +oranges); // 5
+             *  ____________________
+             *
+             *  Operator-Präzedenz
+             *  - Bestimmt Ausführungsreihenfolge von Operationen
+             *  - Höhere Präzedenz zuerst ausgeführt, Klammern überschreiben Präzedenz
+             *
+             *  Zuweisungsoperator('=')
+             *  - Weist Werte zu und gibt zugewiesenen Wert zurück
+             *  ____________________
+             *  let a = 1;
+             *  let b = 2;
+             *  let c = 3 - (a = b + 1);
+             *  alert(a); // 3
+             *  alert(c); // 0
+             *  ____________________
+             *
+             *  Inkrement/ Dekrement(++/--)
+             *  - Erhöht/Verringert eine Variable um eins
+             *  ____________________
+             *  let counter = 2;
+             *  counter++;
+             *  alert(counter); // 3
+             *  counter--;
+             *  alert(counter); // 2
+             *  ____________________
+             *
+             *  Kettenzuweisungen
+             *  - Ermöglicht Zuweisungen desselben Werts an mehrere Variablen
+             *  let a, b, c;
+             *  alert(a); // 4
+             *  alert(b); // 4
+             *  alert(c); // 4
+             *
+             *  Bitweise Operatoren
+             *  - Behandelt Zahlen auf Binärebene (z.B. AND, OR, NOT)
+             *
+             *  Kommaoperator(,)
+             *  - Ermöglicht Ausführung mehrerer Ausdrücke. Gibt Ergebnis des Letzten zurück
+             *  let a = (1 + 2, 3 + 4);
+             *  alert(a); // 7
+             *
+             *
+             *  VERGLEICHE
+             *  - Vergleichsoperatoren
+             *  -> Größer/kleiner               a > b, a < b
+             *  -> Größer/kleiner oder gleich   a >= b, a <= b
+             *  -> Gleich:  a == b
+             *  -> Ungleich: a != b
+             *
+             *  Boolean ist das Ergebnis
+             *  true -> ja, richtig, wahr
+             *  false .> nein, falsch, unwahr
+             *
+             *  ____________________
+             *  alert( 2 > 1); // true (correct)
+             *  alert( 2 == 1); // false (wrong)
+             *  alert( 2 != 1); // true (correct)
+             *  ____________________
+             *
+             *  Wie jeder anderen Wert, kann ein Vergleichsergebnis
+             *  einer anderen Variable zugewiesen werden
+             *
+             *  ____________________
+             *  let result = 5 > 4; // assign the result of the comparison
+             *  alert(result); // true
+             *  ____________________
+             *
+             *  String-Vergleich
+             *  - Feststellen, ob eine Zeichenfolge größer als der andere ist
+             *  alert( 'Z' > 'A' ); // true
+             *  alert( 'Glow' > 'Glee' ); // true
+             *  alert( 'Bee' > 'Be' ); // true
+             *
+             *  - Vergleich verschiedener Typen
+             *      -> Hierbei werden die Werte in Zahlen umgewandelt
+             *      alert( '2' > 1); // true: '2' wird zu 2
+             *      alert( '01' == 1 ); // true, string '01' wird zu 1
+             *
+             *      alert( true == 1); // true
+             *      alert( false == 0); // true
+             *
+             *  Strikte Gleichheit
+             *  - Strikte Gleichheitsoperator === prüft Gleichheit ohne Typkonvertierung
+             *      Beispiel
+             *      alert(0 === false); // false, Typen sind unterschiedlich
+             *
+             *  Vergleich mit null und undefined
+             *  - null und undefined sind gleich (==), aber nicht zu anderen Werten
+             *  - null und undefined werden in Zahlen umgewandelt:
+             *      null wird zu 0
+             *      undefined wird zu NaN
+             *
+             *    Beispiel:
+             *    alert(null > 0); // false
+             *    alert(null == 0); // false
+             *    alert(null >= 0); // true
+             *    alert(undefined > 0); // false
+             *    alert(undefined < 0); // false
+             *    alert(undefined == 0); // false
+             *
+             *    Zusammenfassung:
+             *    - Vergleichsoperatoren sind nützlich, um in JS Werte zu vergleichen,
+             *      sie geben boolesche Werte zurück
+             *    - Beim Arbeiten mit null und undefined sollten Vergleiche mit Vorsicht behandelt werden
+             *    - Um Probleme zu vermeiden: -> Nutzen Sie (===) und (!==)
+             *                                -> Nutzen Sie null und undefined separat
+             *
+             */
+
+            /** Bedingte Verzweigung "if", "?"
+             *
+             *  - Die if-Anweisung: Führt Code aus, wenn die Bedingung erfüllt ist
+             *      ____________________
+             *      let year = prompt('In welchem Jahr wurde die ECMAScript-2015-Spezifikation veröffentlicht?', '');
+             *      if(year == 2015) alert('Das ist korrekt!');
+             *      ____________________
+             *
+             *  - Für mehrere Anweisungen, {} verwenden
+             *      ____________________
+             *      if(year == 2015){
+             *          alert("Das ist korrekt!");
+             *          alert("Du bist so schlau!");
+             *      }
+             *      ____________________
+             *
+             *  - Boolesche Konvertierung
+             *    -> if Anweisung konvertiert den Ausdruck in Klammern zu einem boolschen Wert
+             *    -> Werte wie 0, null, undefined, NaN und leere Strings ("") - sind false
+             *    -> Alle anderen Werte sind true
+             *
+             * - Die else-Klausel
+             *   -> else wird ausgeführt, wenn Bedingung false ist
+             *   ____________________
+             *   if(year == 2015){
+             *       alert('Das ist richtig!');
+             *   } else {
+             *       alert('Wie kannst du so falsch liegen?');
+             *   }
+             *
+             * - Mehrere Bedingungen: else if
+             *   -> Zum Testen mehrerer Bedingungen
+             *
+             *   if(year < 2015){
+             *       alert('Zu früh...');
+             *   } else if(year > 2015){
+             *       alert('Zu spät');
+             *   } else{
+             *       alert('Genau');
+             *   }
+             *
+             * - Bedingungsoperator: ?
+             *   -> Weist je nach Bedingung, verschiedene Werte hinzu
+             *   Syntax: let result = condition ? value1 : value2;
+             *   Beispiel:
+             *      let accessAllowed = (age > 18) ? true : false;
+             *
+             * - Mehrere ?
+             *   -> Sequenz von ? ermöglicht Arbeiten mit mehreren Bedingungen
+             *   Beispiel:
+             *   let age = prompt('Alter?', 18);
+             *   let message = (age < 3) ? 'Hi, Baby!' :
+             *                 (age < 18) ? 'Hallo!' :
+             *                 (age < 100) ? 'Grüße!' :
+             *                 'Was für ein gewöhnliches Alter!';
+             *   alert(message);
+             *
+             * - Nicht-traditionelle Verwendung von ?
+             *   -> Manchmal wird ? anstelle von if verwendet, um Bedingung zu prüfen
+             *   Beispiel:
+             *   let company = prompt('Welche Firma hat JavaScript entwickelt?', '');
+             *   (company == 'Netscape') ? alert('Richtig!') : alert('Falsch.');
+             *
+             *  Es wird empfohlen, ? für Rückgabe von Werten zu verwenden,
+             *  und if für das Ausführen von verschiedenen Blöcken
+             */
+
+            /** Logische Operatoren in JS: || -> (OR),
+             *                             && -> (AND)
+             *                             !  -> (NOT)
+             *
+             * || (OR):
+             * - OR-Operator || prüft, ob mindestens einer der Operanden true ist
+             * - Wenn einer true ist, gibt Operator true als, sonst false
+             * - Beispiel:
+             *   alert(true || true); // true
+             *   alert(false || true); // true
+             *   alert(true || false); // true
+             *   alert(false || false); // false
+             *
+             * - In JS kannd er OR-Operator verwendet werden, um erten "truthy" Wert einer Kette von Operanden zu finden
+             *   Beispiel:
+             *
+             *   alert(1 || 0); // 1 (1 ist truthy)
+             *   alert(null || 1); // 1 (1 ist der erste truthy Wert)
+             *   alert(null || 0 || 1); // 1
+             *   alert(undefined || null || 0); // 0 (alle falsy, letzter Wert zurückgegeben)
+             *
+             *  && (AND):
+             * - AND-Operator && prüft, ob beide Operanden true sind
+             * - Nur wenn beide true sind, gibt Operator true zurück, sonst false
+             * - Beispiel:
+             *  alert(true && true); // true
+             *  alert(false && true); // false
+             *  alert(true && false); // false
+             *  alert(false && false); // false
+             *
+             * - && findet den ersten falsy-Wert in einer Kette, oder, falls alle truthy sind, den letzten Wert
+             * - Beispiel:
+             *   alert(1 && 0); // 0 -> ist der erste falsy Wert
+             *   alert(1 && 5); // 5 -> alle Werte sind truthly, der letzte Wert wird zurückgegeben
+             *   alert(null && 5); // null -> null ist falsy
+             *   alert(0 && "beliebig was"); // 0 -> 0 ist falsy
+             *   alert(1 && 2 && null && 3); // null -> erster falsy Wert
+             *   alert(1 && 2 && 3); // 3 -> alle truthly, letzter Wert wird zurückgegeben
+             *
+             *  ! (NOT):
+             *  - NOT-Operator ! kehrt den boolschen Wert um
+             *  - Beispiel:
+             *      alert(!true); // false
+             *      alert(!0); // true
+             *
+             *
+             *  - Eine doppelte Verneinung wird verwendet, um einen Wert in einen boolschen Typ zu umwandeln:
+             *  alert(!!"nicht leerer String"); // true
+             *  alert(!null); // false
+             *
+             *  - ! hat höchste Präzedenz aller logischen Operatoren, wird daher immer vor (&&) oder (||) verwendet
+             *
+             *  ZUSAMMENFASSUNG:
+             *  - Logische Operatoren können auf Werte beliebiger Typen angewendet werden, und
+             *      das Ergebnis davon kann ebenfalls von beliebigem Typ sein
+             *  - OR-Operator findet den ersten truthly Wert zurück und gibt den letzten Wert zurück,
+             *      wenn alle falsy sind
+             *  - AND-Operator findet den ersten truthly Wert und gibt den letzten Wert zurück,
+             *      wenn alle truthly sind
+             *  - NOT-Operator wandekt den Wert in seinen boolschen Gegensatz zurück
+             *
+             *
+             */
+
+            /** Nullish Coalescing Operator '??'
+             *  - Der Operator ?? gibt den ersten Operanden zurück, wenn er weder null, noch undefined ist,
+             *      andernfalls den zweiten Operanden
+             *  - Syntax: result = a ?? b.
+             *      Beispiel:
+             *      let user;
+             *      alert(user ?? "Anonymous"); // "Anonymous" (user ist undefined)
+             *
+             *  - Der Operator wird häufig verwendet, um Standardwerte zu definieren
+             *    Beispiel:
+             *    let firstName = null;
+             *    let lastName = null;
+             *    let nickName = "Supercoder";
+             *    alert(firstName ?? lastName ?? nickName ?? "Anonymous"); // "Supercoder"
+             *
+             *  Vergleich mit ||
+             *  - OR-Operator kann ähnlich verwendet werden,
+             *  unterscheidet aber nicht zwischen falsy Werten (false, 0, "", etc.) und null/undefined
+             *
+             *  - Beispiel, bei dem || und ?? unterschiedliche Ergebnisse liefern
+             *  let height = 0;
+             *  alert(height || 100); // 100
+             *  alert(height ?? 100); // 0
+             *  || gibt den ersten truthly Wert zurück, ?? den ersten definierten Wert
+             *
+             *  Präzedenz
+             *  - Präzedenz von ?? ist gleich wie die von ||
+             *      er wird vor = und ?, aber nach den meisten Operationen, wie + und * ausgewertet
+             *
+             *  - Bei Verwendung in komplexen Ausdrücken, Klammern verwenden, um gewünschte
+             *      Auswertungsreihenfolge sicherstellen
+             *      Beispiel:
+             *      let height = null;
+             *      let width = null;
+             *      let area = (height ?? 100) * (width ?? 50);
+             *      alert(area); // 5000
+             *
+             *  - Verwendung mit && oder ||
+             *      Aus sicherheitsgründen dürfen ??, &&, sowie || nicht zusammen verwendet werden,
+             *      es sei den die Präzedenz wird explizit mit Klammern angegeben:
+             *
+             *      Beispiel eines Syntaxfehlers:
+             *      let x = 1 && 2 ?? 3; // Syntaxfehler
+             *
+             *      Umgehen des Fehlers mit Klammern:
+             *      let x = (1 && 2) ?? 3; // Funktioniert
+             *      alert(x); // 2
+             *
+             * ZUSAMMENFASSUNG
+             * - Nullish Coalescing Operator ?? ermöglicht kurze Methode,
+             *   den ersten definierten Wert aus einer Liste auszuwählen
+             *
+             * - Nützlich, um Standardwerte für Variablen festzulegen
+             *
+             * - Präzedenz von ?? ist niedrig, ähnlich wie bei ? und =,
+             * - Gleichzeitige Verwendung von ?? mit && oder || ohne explizite Klammern ist verboten
+             */
+
+            /** Loops: while and for (Dieses Thema ohne ChatGPT machen, - ist wichtig!)
+             *
+             *  while-Schleife:
+             *  ____________________
+             *  while(condition){ // wenn condition wahr ist, wird der Schleifen-Körper ausgeführt
+             *      // code
+             *      // so-called "loop body"
+             *  }
+             *
+             *  let i = 0;
+             *  while(i < 3){ // shows 0, then 1, then 2
+             *      alert( i );
+             *      i++;
+             *  }
+             *
+             *  // eine einzelne Ausführung des Schleifenkörpers: Iteration
+             *  // Kürzere Schreibweise von while(i != 0) ist beispielsweise while(i)
+             *
+             *  let i = 3;
+             *  while(i){ // when i becomes 0, the condition becomes falsy, and the loop stops
+             *      alert( i );
+             *      i--;
+             *  }
+             *  ____________________
+             *
+             *  do...while-Schleife
+             *  -> Bedingungsprüfung mithilfe der folgenden Syntax unter Schleifenkörper verschieben
+             *  ____________________
+             *  do{
+             *      // loop body
+             *  } while(condition);
+             *
+             *  // Schleife führt erst den Körper aus, überprüft die Bedingung und führt den Körper weiter aus,
+             *  solange die Bedingung wahr ist
+             *  ____________________
+             *  let i = 0;
+             *  do{
+             *      alert( i );
+             *      i++;
+             *  } while(i < 3);
+             *  ____________________
+             *
+             *  for-Schleife
+             *  -> for-Schleife ist komplexer, - auch am häufigsten verwendete Schleife
+             *  ____________________
+             *  for(begin; condition; step){
+             *      // ... loop body ...
+             *  }
+             *
+             *  // Die folgende Schleife läuft alert(i) von i bis 0 (jedoch nicht einschließlich) 3.
+             *  for(let i = 0; i < 3; i++){
+             *      alert(i);
+             *  }
+             *
+             *  beginnen| let i = 0  | Wird beim Eintritt in die Schleife einmal ausgeführt.
+             *  Zustand | i < 3      | Wird vor jeder Schleifeniteration überprüft. Bei "false" stoppt die Schleife.
+             *  Körper  | alert(i)   | Läuft immer wieder, solange die Bedingung wahr ist.
+             *  Schritt | i++        | Wird bei jeder Iteration nach dem Text ausgeführt.
+             *
+             *  Allgemeine Schleifenalgorithmus:
+             *  Run begin
+             *  -> (if condition -> run body and run step)
+             *  -> (if condition -> run body and run step)
+             *  -> (if condition -> run body and run step)
+             *  -> ...
+             *
+             *  - Bei dem Beispiel
+             *  // Die Variable i wurde in der Schleife erzeugt, kann daher im Außen nicht verwendet werden
+             *  for(let i = 0; i < 3; i++){
+             *      alert(i); // 0, 1, 2
+             *  }
+             *  alert(i); // error, no such variable
+             *
+             *  // Hier aber anders:
+             *  let i = 0;
+             *  for(i = 0; i < 3; i++){ // use an existing variable
+             *      alert(i); // 0, 1, 2
+             *  }
+             *  alert(i); // 3, visible, because declared outside of the loop
+             *
+             *  Die Schleife durchbrechen:
+             *  - Mit der Sonderanweisung, den Ausstieg aus der Schleife jederzeit erzwingen
+             *  ____________________
+             *  let sum = 0;
+             *  while(true){
+             *      let value = +prompt("Enter a number", '');
+             *      if(!value) break; // (*)
+             *      sum += value;
+             *  }
+             *  alert( 'Sum: ' + sum);
+             *  ____________________
+             *
+             *  Fahren Sie mit der nächsten Iteration fort
+             *  - continue Richtlinie ist eine leichtere Version von break.
+             *    Es stoppt nicht die ganze Schleife, sondern stoppt die aktuelle Iteration,
+             *    und überpringt zur nächsten Iteration, falls die Bedingung das zulässt.
+             *
+             *    Beispiel: Bei geraden Werten, die Iteration skippen: Ungerade Werte ausgeben:
+             *    for(let i = 0; i < 10; i++){
+             *        // if true, skip the remaining part of the body
+             *        if( 1 % 2 == 0) continue;
+             *        alert(i); // 1, then 3, 5, 7, 9
+             *    }
+             *
+             *  Beschriftungen für Pause/Fortfahren
+             *  - Manchmal müssen wir aus mehreren verschachtelten Schleifen gleichzeitig ausbrechen
+             *   Im folgenden Beispiel durchlaufen wir i und j:
+             *   ____________________
+             *   for(let i = 0; i < 3; i++){
+             *       for(let j = 0; j < 3; j++){
+             *           let input = prompt('Value at coords (${i},${j})', '');
+             *           // what if we want to exit from here do Done (below)?
+             *       }
+             *   }
+             *   alert('Done!');
+             *   ____________________
+             *
+             *   // Wir brauchen eine Möglichkeit, den Prozess zu stoppen, wenn Benutzer die Eingabe abbricht.
+             *   // Gewöhnliche break, input würde nur die innere Schleife abbrechen.
+             *   // Lösung: Etiketten als Label, mit einem Doppelpunkt vor einer Schleife
+             *   ____________________
+             *   labelName: for(...){
+             *       ...
+             *   }
+             *   ____________________
+             *
+             *   // Die break-Anweisung führt zur Bezeichnung ...
+             *
+             *   ____________________
+             *   outer: for(let i = 0; i < 3; i++){
+             *       for(j = 0; j < 3; j++){
+             *           let input = prompt('Value at coords(${i},${j}', '');
+             *
+             *           // if an empty string or canceled, then break out of both loops
+             *           if(!input) break outer; //(*)
+             *
+             *           // do something with the value
+             *       }
+             *   }
+             *
+             *   alert('Done!');
+             *   ____________________
+             *   // Die Beschriftung kann ebenso in einer separaten Zeile erfolgen
+             *   outer:
+             *   for(let i = 0; i < 3; i++){
+             *       ...
+             *   }
+             *
+             *   // continue und break label sind nur innerhalb von Schleifen möglich
+             *
+             *
+             *   ZUSAMMENFASSUNG
+             *   Drei Arten von Schleifen.
+             *   - while: Bedingung wird vor Iteration überprüft
+             *   - do...while: Bedingung wird nach jeder Iteration überprüft
+             *   - for(;;): Bedingung wird vor jeder Iteration überprüft,
+             *              zusätzliche Einstellung verfügbar
+             */
+
+            /** Das switch-Statement
+             * - switch: beschreibende Methode, um einen Wert mit mehreren Variablen zu vergleichen
+             *
+             * -Syntax:
+             * ____________________
+             * switch(x){
+             *     case 'value1':
+             *          // code für value1
+             *          [break]
+             *
+             *     case 'value2':
+             *          // code für value2
+             *          [break]
+             *
+             *     default:
+             *          // code, wenn kein Fall zutrifft
+             *          [break]
+             * }
+             *
+             * // x wird mit jeddem case-Wert geprüft
+             * // Wenn Übereinstimmung gefunden wird, beginnt die Ausführung bis break
+             * // sonst wird default ausgeführt
+             * - Beispiel:
+             * ____________________
+             *  let a = 2 + 2;
+             *  switch(a){
+             *      case 3:
+             *          alert('Zu klein');
+             *          break;
+             *      case 4:
+             *          alert('Genau!');
+             *          break;
+             *      case 5:
+             *          alert('Zu groß');
+             *          break;
+             *      default:
+             *          alert("Ich kenne solche Werte nicht");
+             *  }
+             *
+             *  - beliebige Ausdrücke:
+             *  ____________________
+             *  let a = "1";
+             *  let b = 0;
+             *
+             *  switch (+a){
+             *      case b + 1;
+             *          alert("Das läuft, weil +a 1 ist, genau gleich b+1");
+             *          break;
+             *      default:
+             *          alert("Das läuft nicht");
+             *  }
+             *
+             *  Gruppierung von case
+             *  - Mehrere case, die denselben Code ausführen,
+             *      können zu einer Gruppe zusammengefasst werden
+             *  ____________________
+             *  let a = 3;
+             *  switch(a){
+             *      case 4:
+             *          alert('Richtig');
+             *          break;
+             *      case 3: // Gruppierung von zwei Fällen
+             *      case 5:
+             *          alert('Falsch!');
+             *          alert("Warum nimmst du keinen Mathekurs?");
+             *          break;
+             *      default:
+             *          alert('Das Ergebnis ist seltsam. Wirklich:');
+             *  }
+             *
+             *  Typen sind wichtig
+             *  - Der Vergleich ist immer strikt (===). Die Werte müssen vom gleichen Typ sein
+             *  ____________________
+             *  let arg = prompt("Geben Sie einen Wert ein?");
+             *  switch(arg){
+             *      case '0':
+             *      case '1':
+             *          alert('Eins oder null');
+             *          break;
+             *      case '2':
+             *          alert('Zwei');
+             *          break;
+             *      case 3:
+             *          alert('Wird nie ausgeführt!');
+             *          break;
+             *      default:
+             *          alert('Ein unbekannter Wert');
+             *  }
+             *
+             *  ZUSAMMENFASSUNG
+             *  - switch-case bietet eine klare und strukturierte Möglichkeit,
+             *      einen Wert gegen mehreren Fälle zu prüfen.
+             *  - Geeignet, wenn ein Wert mit mehreren Variante überprüft werden soll
+             */
+
+
+            /** Funktionen in JavaScript
+             * - Hauptbestandteile in einem Programm
+             * - Erlauben Wiederverwendung von Code ohne Wiederholung
+             * - Beispiele für eingebaute Funktionen sind
+             *      alert(message)
+             *      prompt(message, default)
+             *      confirm(question)
+             *
+             * - Funktionserklärung(Function Declaration)
+             *   -> Eine Funktion wird mit function-Schlüsselwort erstellt
+             *   -> Syntax:
+             *      function functionName(){
+             *          // code
+             *      }
+             *
+             *   -> Beispiel:
+             *      function showMessage(){
+             *          alert('Hallo alle!');
+             *      }
+             *      // Diese Funktion durch showMessage() aufrufen
+             *
+             * - Lokale Variable:
+             *      -> In einer Funktion deklarierte Variable (lokale Variable) ist nur
+             *          innerhalb dieser Funktion sichtbar
+             *
+             * - Äußere Variable:
+             *      -> Funktion kann auf äußere Variable zugreifen und diese ändern
+             *      -> Beispiel:
+             *      let userName = 'John';
+             *      function showMessage(){
+             *          alert('Hallo,' + userName);
+             *      }
+             *
+             * - Parameter
+             *   -> Funktionen können beliebige Daten über Parameter erhalten
+             *   -> Beispiel:
+             *   function showMessage(from, text){
+             *       alert(from + ':' + text);
+             *   }
+             *   showMessage('Ann','Hallo!');
+             *
+             * - Standardwerte
+             *   -> Standardwerte für Parameter in Funktionsdeklaration
+             *   -> Beispiel:
+             *   function showMessage(from, text = "kein Text gegeben"){
+             *       alert(from + ": " + text);
+             *   }
+             *   showMessage('Ann'); // Ann: kein Text gegeben
+             *
+             * - Rückgabewert
+             *   -> Eine Funktion kann einen Wert zurück in den auftretenden Code
+             *      als Ergebnis liefern
+             *   -> Beispiel:
+             *   function sum(a, b){
+             *       return a + b;
+             *   }
+             *   let result = sum(1, 2);
+             *   alert(result); // 3
+             *
+             * - Namensgebung von Funktionen
+             *   -> Funktionen sollten mit einem Verb beginnen und klar beschreiben, was sie tun
+             *   -> Übliche Präfixe: create
+             *                       show
+             *                       get
+             *                       check
+             *
+             * - Eine Funktion - eine Aktion
+             *   -> Eine Funktion sollte genau das tun, was ihr Name vorschlägt, nicht mehr
+             *   -> Separate Aktionen verdienen separate Funktionen
+             *
+             * - Ultrakurze Funktionsnamen
+             *   -> Häufig verwendete Funktionen haben manchmal ultrakurze Namen, wie
+             *      $ in jQuery, oder
+             *      - in Lodash
+             *
+             * - Funktionen gleich Kommentare
+             *   -> Funktionen sollten kurz sein und genau eine Sache tun
+             *   -> Funktionen strukturieren den Code und machen ihn lesbarer
+             *
+             *
+             * ZUSAMMENFASSUNG
+             * - Funktionen: Codeblöcke gruppieren, die dann mehrfach aufgerufen werden können
+             * - Nützlich für Codeorganisation und Wiederverwendung
+             * - Verwendung von Funktionen: Erhöht Lesbarkeit und Wartbarkeit des Codes
+             *
+             */
+
+            /** Function Expressions in JavaScript
+             *
+             * - Function Declaration: Standardmethode zur Funktionsdefinition
+             *
+             *   function sayHi(){
+             *       alert("Hallo");
+             *   }
+             *
+             * - Function Expression: Alternative Methode zur Funktionsdefinition
+             *
+             *   let sayHi = function(){
+             *       alert("Hallo");
+             *   }
+             *
+             * - Unterschiede:
+             *   -> Function Declaration: definiert eine Funktion und bindet sie an einen Namen.
+             *   -> Function Expression: erstellt eine Funktion und weist sie einer Variablen zu.
+             * - Funktionen sind Werte:
+             *      In JS werden Funktionen wie Werte behandelt werden
+             *
+             *  Weitere Eigenschaften von Function Expressions
+             *  - Anonyme Funktionen: Function Expressions können anonym sein (ohne Namen)
+             *  - Callback-Funktionen: Funktionen, die als Argumente an andere Funktionen übergeben werden
+             *    Beispiel:
+             *
+             *    function ask(question, yes, no){
+             *        if(confirm(question)){
+             *            yes()
+             *        }else{
+             *            no();
+             *        }
+             *    }
+             *
+             *    ask(
+             *      "Stimmen Sie zu?"
+             *      function(){
+             *          alert("Sie stimmten zu.");
+             *      }
+             *      function(){
+             *          alert("Sie lehnten ab.")
+             *      };
+             *    )
+             *
+             *  - Unmittelbarer Funktionsaufruf: Funktionen können direkt nach ihrer Definition aufgerufen werden
+             *
+             *
+             *  Funktionen als Werte
+             *  - Funktionen können kopiert, oder einer anderen Variable zugewiesen werden
+             *  - Funktionen können in einer Variable gespeichert und später aufgerufen werden
+             *
+             *  Unterschiede zwischen Function Declaration und Function Expression
+             *  - Sichtbarkeit:
+             *      Function Declaration: Im gesamten Code sichtbar
+             *      Function Expression: Nur nach ihrer Definition sichtbar
+             *
+             *  - Erstellungszeitpunkt:
+             *      Function Declaration werden vor Ausführung des Codeblocks erstellt
+             *      Function Expression werden zum Zeitpunkt ihrer Ausführung erstellt
+             *
+             *  ZUSAMMENFASSUNG
+             *  - Funktionen: Zentraler Bestandteil von JS, - können auf verschiedene Weisen definiert werden
+             *  - Wahl zwischen Function Declaration und Function Expression:
+             *      Abhängig vom spezifischen Anwendungsfall, und bevorzugten Code-Struktur
+             *
+             */
+
+            /** Beispiele für Arrow Functions
+             *  -> Einfache Arrow Function:
+             *  let sum = (a, b) => a + b;
+             *  alert(sum(1, 2)); // 3
+             *
+             *  // Diese Funktion nimmt zwei Parameter a und b entgegen und gibt ihre Summe zurück
+             *
+             *  -> Arrow Function ohne Klammern bei einem Parameter
+             *  let double = n => n * 2;
+             *  alert(double(3)); // 6
+             *
+             *  // Hier wird der Parameter n verdoppelt
+             *
+             *  -> Arrow Function ohne Argumente
+             *  let sayHi = () => alert("Hallo!");
+             *  sayHi();
+             *
+             *  // Diese Funktion gibt "Hallo!" aus, wenn sie aufgerufen wird.
+             *
+             *  -> Mehrzeilige Arrow Function
+             *  let sum = (a, b) => {
+             *      let result = a + b;
+             *      return result;
+             *  };
+             *  alert(sum(1, 2)); // 3
+             *
+             *  // Diese Funktion berechnet die Summe von a und b
+             *     in einem mehrzeiligen Funktionskörper
+             */
+
+            /**
+             *
+             *
+             */
+
+            /** JavaScript-Spezialitäten
+             *
+             * 1. Code-Struktur:
+             *    -> Anweisungen durch Semikolon trennen
+             *    alert('Hallo'); alert('Welt');
+             *
+             * 2. Strikter Modus:
+             *    -> Um Alle Funktionen von modernem JS zu aktivieren
+             *    -> Am Anfang eines Skripts, oder Funktionskörper
+             * 'use strict';
+             * // Moderner JavaScript-Code...
+             *
+             * 3. Variablen:
+             *    -> Kann deklariert werden mit
+             *       - let
+             *       - const (Konstant, kann nicht geändert werden)
+             *       - var (im alten Stil, siehe später)
+             *
+             *    -> Variablenname:
+             *       - Buchstabe und Ziffern, kein Ziffer als erstes Zeichen
+             *       - Zeichen $ und _ sind normal, gleich wie Buchstaben
+             *       - Variablen werden dynamisch typisiert, können jeden Wert speichern:
+             *
+             *       let x = 5;
+             *       x = "John";
+             *
+             *    -> 8 Datentypen
+             *       - number (Gleitkommazahl als auch Ganzzahl)
+             *       - bigint (Ganze Zahlen beliebiger Länge)
+             *       - string (Zeichenketten)
+             *       - boolen (logische Werte, true und false)
+             *       - null (Typ mit einzelnem Wert: "null", oder "leer", oder "existiert nicht")
+             *       - undefined (Typ mit einem einzelnen Wert, - undefined, bedeutung: nicht zugewiesen)
+             *       - object und symbol (für komplexe Datenstrukturen, und eindeutige Bezeichner)
+             *       // typeof gibt Datentyp zurück
+             *
+             * 4. Interaktion:
+             *    -> Browser als Arbeitsumgebung: Grundlegende UI-Funktionen
+             *    prompt(question, [default])
+             *    Eingabeaufforderung für den Benutzer, um eine Zeichenkette eingeben
+             *
+             *    confirm(question)
+             *    Bestätigungsnachricht/Frage anzeigen: Benutzerentscheidung als true oder false einholen
+             *
+             *    alert(message)
+             *    Einfaches Nachrichtendialog anzeigen
+             *
+             *
+             *    -> Alle diese Funktionen sind modal: Sie unterbrechen Codeausführung und verhindern,
+             *       dass der Benutzer mit Seite interagiert, bis Antwort kommt:
+             *       Beispiel:
+             *
+             *       let userName = prompt("Your name?","Alice");
+             *       let isTeaWanted = confirm("Do you want some tea?");
+             *
+             *       alert("Visitor: " + userName); // Alice
+             *       alert("Tea wanted: " + isTeaWanted); // true
+             *
+             * 5. Operatoren
+             *
+             *    alert('1' + 2); // '12', string
+             *    alert(0 == false); // true
+             *
+             *  6. Schleifen
+             *
+             *  while(bedingung){
+             *      // ...
+             *  }
+             *
+             *  do{
+             *      // ...
+             *  } while(bedingung);
+             *
+             *  for(let i = 0; i < 10; i++){
+             *      // ...
+             *  }
+             *
+             * 6. switch-Anweisung
+             *
+             *  let age = prompt('Dein Alter?', 18);
+             *
+             *  switch(age){
+             *      case 18;
+             *          alert("Funktioniert nicht"); // das Ergebnis von prompt ist ein String, keine Zahl
+             *          break;
+             *
+             *      case "18":
+             *          alert("Das funktioniert!");
+             *          break;
+             *
+             *      default:
+             *          alert("Ein beliebiger Wert, der nicht mit einem der obigen übereinstimmt");
+             *  }
+             *
+             * 7. Funktionen
+             *
+             *  function sum(a, b){
+             *      let result = a + b;
+             *      return result;
+             *  }
+             *
+             *  let sum = function(a, b){
+             *      let result = a + b;
+             *      return result;
+             *  };
+             *
+             *  // Pfeilfunktionen
+             *  let sum = (a, b) => a + b;
+             *  let sum = (a, b) => {
+             *      return a + b;
+             *  };
+             *
+             *  let sayHi = () => alert("Hallo");
+             *  let double = n => n * 2;
+             */
+
+
+
+        </script>
+        <p>...After the script.</p>
+    </body>
+</html>

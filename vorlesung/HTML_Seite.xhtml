@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Beispiel-Seite</title>
+        <script type="text/javascript" src="first01.js"/>
+    </head>
+    <body>
+        <form action="#">
+            <input type="button" value="Move it" onclick="$$.moveAround()">
+            </input>
+        </form>
+        <p>
+            <span id="colorP">
+                <a href="javascript:$$.changeColor()">Change the color</a>
+                of this text
+            </span>
+        </p>
+        <div id="moveIt">
+            We will move around.
+            <a href="javascript:$$.addItem()">Add</a>
+            another item to the list:
+            <ul id="list">
+                <li>me</li>
+                <li>and me too</li>
+            </ul>
+        </div>
+    </body>
+</html>

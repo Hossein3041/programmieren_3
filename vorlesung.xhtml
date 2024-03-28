@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Exkurs JavaScript</title>
+        <script type="text/javascript">
+            function inline() {alert("calling function inline");}
+        </script>
+        <script type="text/javascript" src="vorlesung/exkursJS01.js">
+        </script>
+    </head>
+    <body>
+        <h2>Some Experiments</h2>
+        Calling the JavaScript function <a href="javascript:inline()">inline</a>
+
+        <h2> Mein eigenes Beispiel</h2>
+        Der folgende Button ist meins: <a href="javascript:beispiel()">Button von Hossein</a>
+
+        <form action="#">
+            <input type="button"
+                    value="Funktion Welt() wurde aufgerufen"
+                    onclick="welt()"/>
+        </form>
+
+        <form action="#">
+            <input type="button"
+                    value="Funktion für Parameter"
+                    onclick="test()"/>
+        </form>
+
+        <form action="#">
+            <input type="button"
+                    value="testRest aufrufen"
+                    onclick="testRest()"/>
+        </form>
+
+        Calling the above JavaScript function <code> test2 </code>
+        with and without arguments:
+        <a href="javascript:test2('111')">test2('111')</a>
+        <a href="javascript:test2(111)">test2(111)</a>
+        <a href="javascript:test2()">test()</a>
+
+        Testing rest parameters:
+        <a href="javascript:testRest2(1)">?</a>
+        <a href="javascript:testRest2(1, 2, 3)">??</a>
+        <a href="javascript:testRest2()">???</a>
+
+        <form action="#">
+            <input type="button"
+                   value="usingVariables aufrufen"
+                   onclick="usingVariables()"/>
+        </form>
+
+        <form action="#">
+            <input type="button"
+                   value="testString aufrufen"
+                   onclick="testString()"/>
+        </form>
+
+        <form action="#">
+            <input type="button"
+                   value="testNumber aufrufen"
+                   onclick="testNumber()"/>
+        </form>
+
+        <form action="#">
+                <input type="button"
+                        value="testBoolean aufrufen"
+                        onclick="testBoolean()"/>
+        </form>
+
+        <form action="#">
+            <input type="button"
+                   value="testObject aufrufen"
+                   onclick="testObject()"/>
+        </form>
+
+        <form action="#">
+            <input type="button"
+                   value="testObjectAccess aufrufen"
+                   onclick="testObjectAccess()"/>
+        </form>
+
+        <form action="#">
+            <input type="button"
+                   value="forschleife aufrufen"
+                   onclick="forschleife()"/>
+        </form>
+
+        <form action="#">
+            <input type="button"
+                   value="testArray() aufrufen"
+                   onclick="testArray()"/>
+        </form>
+
+        <form action="#">
+            <input type="button"
+                   value="construction01() aufrufen"
+                   onclick="construction01()"/>
+        </form>
+
+        <form action="#">
+            <input type="button"
+                   value="parsing01() aufrufen"
+                   onclick="parsing01()"/>
+        </form>
+
+        <form action="#">
+            <input type="button"
+                   value="stringify() aufrufen"
+                   onclick="stringify()"/>
+        </form>
+    </body>
+</html>

@@ -1,0 +1,60 @@
+body {
+    position: fixed;
+    transition: background-color 0.5s ease-in-out;
+}
+
+h1 {
+    border: 1px solid black;
+    max-width: 500px;
+}
+
+h2 {
+    border: 1px solid black;
+    max-width: 500px;
+}
+
+p {
+    border: 1px solid black;
+    max-width: 500px;
+}
+
+a {
+    border: 1px solid black;
+    max-width: 500px;
+}
+
+#main-list {
+    border: 1px solid black; /* Rahmen um die Listenelemente hinzufügen */
+    margin-bottom: 5px; /* Abstand zwischen den Listenelementen */
+    max-width: 300px;
+}
+
+#main-list-2 {
+    border: 1px solid black; /* Rahmen um die Listenelemente hinzufügen */
+    margin-bottom: 5px; /* Abstand zwischen den Listenelementen */
+    max-width: 300px;
+}
+
+#main-list-3 {
+    border: 1px solid black; /* Rahmen um die Listenelemente hinzufügen */
+    margin-bottom: 5px; /* Abstand zwischen den Listenelementen */
+    max-width: 300px;
+}
+
+
+table {
+    border-collapse: collapse;
+    width: 20%;
+}
+
+.outer-table {
+    display: inline-block; /* Zeigt die Tabellen nebeneinander an */
+    margin-right: 20px; /* Abstand zwischen den Tabellen */
+    border: 1px solid black; /* Rahmen um die Tabellen hinzufügen */
+}
+
+td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}

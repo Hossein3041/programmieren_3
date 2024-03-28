@@ -1,0 +1,94 @@
+"use strict";
+
+window.addEventListener("load", function(){
+    mischButton();
+});
+
+function mischButton(){
+    const elementTypen = ["h1", "h2", "img", "p", "a", "li", "tr"];
+    const body = document.body;
+
+    const steuerAbschnitt = document.createElement("div");
+    steuerAbschnitt.style.border = "2px solid black";
+    steuerAbschnitt.style.padding = "10px";
+    steuerAbschnitt.style.marginTop = "20px";
+    steuerAbschnitt.style.backgroundColor = "#f0f0f0";
+
+    elementTypen.forEach(aktTyp => {
+        const elementName = document.getElementsByTagName(aktTyp);
+        const anzahl = elementName.length;
+
+        if(anzahl > 0){
+            const button = document.createElement("button");
+            button.innerHTML = `Instanz ${aktTyp}, mit Anzahl: ${anzahl}, mischen!`;
+            button.addEventListener("click", function(){
+                mischNormal(aktTyp);
+            });
+
+            steuerAbschnitt.appendChild(button);
+        }
+    });
+
+    body.appendChild(steuerAbschnitt);
+}
+
+
+
+function mischNormal(aktTyp2){
+    const elemente = document.querySelectorAll(aktTyp2);
+    if(elemente.length < 2){
+        console.log(`Zu wenige Elemente vom Typ ${Array.from(elemente)} bro!`);
+        return;
+    }
+    console.log(elemente)
+    let i1,i2,instanzEins,instanzZwei;
+    
+
+    do{
+        i1 = Math.floor(Math.random() * elemente.length);
+        i2 = Math.floor(Math.random() * elemente.length);
+        instanzEins = elemente[i1];
+        instanzZwei = elemente[i2];
+    } while(i1 === i2 || instanzEins.contains(instanzZwei) || // the first node contains the second node
+    instanzZwei.contains(instanzEins));
+
+    vertauscheInstanzenNormal(instanzEins, instanzZwei);
+}
+
+function vertauscheInstanzenNormal(n1, n2){
+    let p1 = n1.parentNode;
+    let p2 = n2.parentNode;
+    let i1, i2;
+
+    if ( !p1 || !p2 || p1.isEqualNode(n2) || p2.isEqualNode(n1) ) {
+        console.log("cannot exchange with its parent")
+        return 
+    } 
+    if (p1 === p2) {
+     
+        let tmp = document.createElement('li');
+        p1.replaceChild(tmp, n1);
+        p1.replaceChild(n1, n2);
+        p1.replaceChild(n2, tmp);
+        return 
+    }
+
+    for (let i = 0; i < p1.children.length; i++) {
+        if (p1.children[i].isEqualNode(n1)) {
+            i1 = i;
+        }
+    }
+    for (let i = 0; i < p2.children.length; i++) {
+        if (p2.children[i].isEqualNode(n2)) {
+            i2 = i;
+        }
+    }
+
+    if ( p1.isEqualNode(p2) && i1 < i2 ) {
+        i2++;
+    }
+
+        p1.insertBefore(n2, p1.children[i1]);
+        p2.insertBefore(n1, p2.children[i2]);
+    
+}
