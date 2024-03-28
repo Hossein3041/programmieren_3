@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="Assignment1.xsl"?>
+<!-- Stylesheet zum anzeigen der Datei im Browser eingebunden -->
+<Labordaten 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="assignment01.webprog.de Assignment1.xsd"
+    xmlns="assignment01.webprog.de">
+    <!-- Deafult Namensraum Implizit deklariert, verbindung zu XML Schema über xsi,  Labordaten als Wurzelement-->
+    <Labor Name="Labor01" Raum="Raum01">
+    <!-- Name und Labor unique, um sicherzustellen, dass sie unique sind -->
+    <!--Einzelne Labore Kinder von dem Wurzelelement (Labordaten)-->
+        <Computer RechnerId="Rechner01">
+        <!-- Id als Attribut, gilt nur der eindeutugen identifizierung der Rechner,
+        Unique Identifier aus unserer Sicht als Attribut sinnvoll muss keine Daten erhalten dient nur
+        der eindeutigen zuweisung-->
+            <Betriebssystem>Linux</Betriebssystem>
+            <Anschaffung>2002-09-24</Anschaffung>
+            <Erweiterungen>
+            	<Beschreibung>1 TB Festplatte von <hersteller>SeaGate</hersteller> nachgerüstet </Beschreibung>
+            </Erweiterungen>
+            <Rechnerbeschreibung>Leistungsstarker <hersteller>Lenovo</hersteller> Rechner, für Virtual Reality Programmierung geeignet
+           		 mit Grafikkarte von <hersteller>NVIDIA</hersteller>.
+            </Rechnerbeschreibung>
+            <Rechnerbesonderheiten>Kaputt,in Reparatur</Rechnerbesonderheiten>
+            <!--Daten vonder Aufgabe gefordert, als Element, da es für uns sinnvoller war daten, auf die man öfter zugreifen muss und deren Inhalt man braucht
+            als element zu modellieren, Beschreibungen mixed content ansonsten nur Text -->
+            <Software2 lizensiert="true" Id="Java"/>
+            <!-- Ref und lizensiert als Attribut, werden vergliechen aber nicht ausgelesen, daher Attribute, lizensiert default wert true, in diesem Fall spezifisch
+            geschrieben auch wenn es nicht nötig ist -->
+        </Computer>
+        <Computer RechnerId="Rechner02">
+            <Betriebssystem>Windows</Betriebssystem>
+            <Anschaffung>2002-01-30</Anschaffung>
+            <Erweiterungen>
+            	<Beschreibung> Grafikkarte von <hersteller>NVIDIA</hersteller> nachgerüstet. </Beschreibung>
+            </Erweiterungen>
+            <Rechnerbeschreibung>   
+                  Perfekt für einfache Programmierung.
+            </Rechnerbeschreibung>
+            <Rechnerbesonderheiten>Gehäuse beschädigt</Rechnerbesonderheiten>
+            <Software2 lizensiert="true" Id="Eclipse"/>
+            <!-- Software andere, darf nicht 2 mal dieselbe enthalten auf demselben Rechner muss als SoftwareID vorhanden sein -->
+        </Computer>
+        <Computer RechnerId="Rechner03">
+            <Betriebssystem>Windows</Betriebssystem>
+            <Anschaffung>2002-04-25</Anschaffung>
+            <Erweiterungen>
+            <Beschreibung> Hallo diese Gra-Ka ist von<hersteller>NVIDIA</hersteller>  </Beschreibung>     
+            </Erweiterungen>
+            <!-- Erweiterungen,Rechnerbesonderheiten und Software2 als einzigste in der Deklaration nicht nötig, können auch weggelassen werden -->
+            <Rechnerbeschreibung>  
+            		Eher für allgemeine Programmierung vorgesehen, nicht so leistungsstark.
+            		Von <hersteller>HP</hersteller>.
+            		Momentan nicht nutzbar.
+            </Rechnerbeschreibung>
+            <Rechnerbesonderheiten>Monitor und Tastatur fehlen</Rechnerbesonderheiten>
+            <Software2 lizensiert="false" Id="VIM"/>
+            <Software2 lizensiert="true" Id="Eclipse"/>
+            <!-- Mehrere mit verschiedenen Werten möglich -->
+        </Computer>
+         <Software ID="OXygen">
+            <Softwarename>Oxygen</Softwarename>
+            <Softwarebeschreibung>
+            		Plug-In
+                    <hersteller>Oxygen</hersteller>
+            </Softwarebeschreibung>
+            <Softwarebesonderheiten>Plug-In für Eclipse</Softwarebesonderheiten>
+        </Software>
+        <!--Software besteht aus ID, Namen,Beschreibung und Besonderheiten -->
+        <Software ID="Eclipse">
+            <Softwarename>Eclipse</Softwarename>
+            <Softwarebeschreibung>IDE
+                    <hersteller>Eclipse</hersteller>
+            </Softwarebeschreibung>
+            <Softwarebesonderheiten> Version veraltet </Softwarebesonderheiten>
+        </Software>
+        <Software ID="Java">
+            <Softwarename>Java</Softwarename>
+            <Softwarebeschreibung>
+            		Programmierung
+                    <hersteller>Oracle</hersteller>
+            </Softwarebeschreibung>
+            <Softwarebesonderheiten>Objektorientierte Programmierungsprache</Softwarebesonderheiten>
+        </Software>
+        <Software ID="VIM">
+            <Softwarename>VIM</Softwarename>
+            <Softwarebeschreibung>
+            		Textverarbeitung
+                    <hersteller>vim</hersteller>
+            </Softwarebeschreibung>
+            <Softwarebesonderheiten>Sehr Leitungsstark</Softwarebesonderheiten>
+        </Software>
+        
+        <weitere_Geraete WeiteresID="01">
+            <Art>Beamer</Art>
+            <Beschreibung>
+                    <hersteller>BenQ</hersteller>
+            </Beschreibung>
+        </weitere_Geraete>
+        <!-- weitere_geraete auch nicht notwendig können auftauchen müssen aber nicht -->
+        <weitere_Geraete WeiteresID="02">
+        <!-- Eindeutige ID für jedes Gerät-->
+            <Art>Drucker</Art>
+            <!--Art des gerätes (Name)-->
+            <Beschreibung>Schöner Drucker von
+                    <hersteller>HP</hersteller>
+            </Beschreibung>
+            <!-- auch wieder mixed content, Beschreibungen teilen sich einen Typen -->
+        </weitere_Geraete>
+    </Labor>
+    <!-- Mindestens 1 Labor nötig können aber auch mehr sein, sowie ein Computer -->
+    <Labor Name="Labor02" Raum="Raum02">
+    <!-- Labor muss anderen namen und Raum ahben, 2 Laore in einem Raum oder 2 Räume in einem Labor 
+    haben für uns eher ekinen Sinn gemacht
+    -->
+        <Computer RechnerId="Rechner01">
+            <Betriebssystem>MAc OS</Betriebssystem>
+            <Anschaffung>2002-09-24</Anschaffung>
+            <Erweiterungen>
+            	<Beschreibung> Mainboard von <hersteller>MSI</hersteller> nachgerüstet, sowie 20 TB SSD von <hersteller>Samsung</hersteller> </Beschreibung>        
+            </Erweiterungen>
+            <Rechnerbeschreibung>   
+                    <hersteller>NVIDIA</hersteller>
+            </Rechnerbeschreibung>
+            <Rechnerbesonderheiten>Keine</Rechnerbesonderheiten>
+            <Software2 Id="Eclipse"/>
+            <Software2 Id="VIM"/>
+        </Computer>
+        <Software ID="Eclipse">
+            <Softwarename>Eclipse</Softwarename>
+            <Softwarebeschreibung>
+                    <hersteller>Eclipse</hersteller>
+            </Softwarebeschreibung>
+            <Softwarebesonderheiten>Für Fortgeschrittene</Softwarebesonderheiten>
+        </Software>
+        <!-- Selbe Definition wie oben aber okay da anderes Labor -->
+        <Software ID="VIM">
+            <Softwarename>VIM</Softwarename>
+            <Softwarebeschreibung>
+            		Textverarbeitung
+                    <hersteller>vim</hersteller>
+            </Softwarebeschreibung>
+            <Softwarebesonderheiten>Sehr Leitungsstark, how to exit?</Softwarebesonderheiten>
+        </Software>
+        <Software ID="Java">
+            <Softwarename>Java</Softwarename>
+            <Softwarebeschreibung>
+            		Programmierung
+                    <hersteller>Oracle</hersteller>
+            </Softwarebeschreibung>
+            <Softwarebesonderheiten>Objektorientierte Programmierungsprache</Softwarebesonderheiten>
+        </Software>
+        <weitere_Geraete WeiteresID="01">
+            <Art>Beamer</Art>
+            <Beschreibung>
+                    <hersteller>Logitech</hersteller>
+            </Beschreibung>
+        </weitere_Geraete>
+        <!--Andere Räume dürfen dieselbe ID haben für Geräte etc, da der Raum sie schon spezifisch auseinanderhällt -->
+    </Labor>
+</Labordaten>
+

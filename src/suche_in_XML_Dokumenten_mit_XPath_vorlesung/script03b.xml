@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- file: script03b.xml -->
+<!DOCTYPE courseDoc SYSTEM "script02.dtd">
+<courseDoc title="3. Testen von XML-Dokumenten">
+    <abstract><!-- Abstr. -->Zusammenfassung...</abstract>
+    <chapter heading="Erstes Kapitel">
+        <para> Absatz eins</para>
+        <para> Absatz zwei</para>
+    </chapter>
+    <chapter heading="Zweites Kapitel" sparePages="2">
+        <para> Absatz eins</para>
+    </chapter>
+    <chapter heading="Drittes Kapitel">
+        <!-- 3. Kapitel -->
+        <para> Absatz eins</para>#
+    </chapter>
+</courseDoc>

@@ -1,0 +1,60 @@
+a) Bestimmen Sie die Namen aller Kinder der Wurzel des Dokumentenbaumes!
+//persons/node()
+
+b) Wie viele Personen kommen in dem Dokument vor?
+count(//person)
+
+c) Welche Personen haben keinen Namen, sondern nur einen Vornamen?
+//person[firstname and not(lastname)]
+
+d) Welche Personen sind in dem Dokument nicht als Kinder anderer Personen aufgeführt?
+//person[not(@friends) and not(parent::children/parent::person/@id)]
+
+e) Finden Sie zu jedem im Dokument enthaltenen Kommentar die Person, die der nächste Vorfahre des Kommentarknotens ist, und geben  Sie deren Vornamen aus!
+//comment()[ancestor::person][1]/ancestor::person/firstname/text()
+
+f) Welche Personen haben denselben Wohnort wie Tieger?
+//person[./residence = "Bei Kängah"]
+
+g) Finden Sie alle Personen, deren Vor- oder Nachname den Buchstaben "r" enthält
+//person[contains(firstname, 'r') or contains(lastname, 'r')]
+
+h) Wie groß ist die durchschnittliche Kinderanzahl, wenn Sie für I-Ah auch noch zwei Kinder eintragen?
+count(//person/children) + 2 div count(//person)
+
+i) Für wie viele Personen sind Wohnorte aufgeführt?
+count(//person/residence)
+oder
+count(//person[residence])
+oder
+count(//person[./residence])
+
+j) Wie viele verschiedene Wohnorte sind aufgefürt?
+count(//person/residence[not(. = preceding::residence)])
+
+k) Wie oft ist in dem Dokument jemand als Freund einer anderer Person aufgefuhrt?
+count(//@friends)
+
+
+4.2 - b)
+
+- Wie viele Personen sind im Dokument notiert?
+count(//team/*)
+
+- Listen Sie alle Skills der Personen auf
+//projekt/team/*/skill/text()
+
+- Wie heißen die Teamleiter?
+//projekt/team/teamleiter/text()
+
+- Wie groß ist die durchschnittliche Teamgröße?
+(Anzahl Teammitglieder)/(Anzahl Teams)
+count(//projekt/team/*) div count(//projekt/*)
+
+- Für welche Projekte ist die Laufzeit noch nicht abgelaufen?
+
+
+
+
+
+

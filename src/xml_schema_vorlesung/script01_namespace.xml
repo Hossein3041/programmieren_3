@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- file: script01_namespace.xml -->
+
+<s:courseDoc
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:m="http://www.w3.org/1998/Math/MathML"
+        xmlns:s="http://www.courseDoc.de"
+        xsi:schemaLocation=
+                "http://www.courseDoc.de script01_namespace.xsd"
+        title="Dies und das aus der Informatik">
+    <s:abstract>Dinge, die man wissen sollte</s:abstract>
+    <s:chapter heading="Erstes Kapitel" important="no">
+        <s:para>Grundlagen</s:para>
+        <s:para>Noch mehr</s:para>
+    </s:chapter>
+    <s:chapter heading="Nette Dinge">
+        <s:para>Chromatische Zahl</s:para>
+        <s:para>Eulersche Polyederformel: <m:math>
+            <m:mi>p</m:mi><m:mo>+</m:mo><m:mi>f</m:mi>
+            <m:mo>=</m:mo>
+            <m:mi>q</m:mi><m:mo>+</m:mo><m:mi>2</m:mi>
+        </m:math></s:para>
+        <s:para><m:math>
+            <m:mi>y</m:mi><m:mo>=</m:mo><m:mi>m</m:mi>
+            <m:mo>&#8290;</m:mo> <!-- &InvisibleTimes; -->
+            <m:mi>x</m:mi><m:mo>+</m:mo><m:mi>b</m:mi>
+        </m:math></s:para>
+    </s:chapter>
+</s:courseDoc>

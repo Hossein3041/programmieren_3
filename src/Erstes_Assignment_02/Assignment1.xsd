@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Aufgabe: Bestand der Informatik-Rechnerlabore erfassen -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="assignment01.webprog.de" xmlns:xt="assignment01.webprog.de" xmlns="assignment01.webprog.de">
+	<xs:element name='Labordaten'>
+		<xs:complexType>
+		<xs:sequence>
+			<!--
+			Elementdeklaration für Labor/ Labore
+			Attribut name stellt den namen von dem Element, Attribut, etc. dar:
+			Beispiel: <xs:element name="Labor" ...         der Name des Elements heißt Labor...
+			minOccurs maxOccurs als Attribut sind für die Angabe der Anzahl des Elements:
+			minOccurs"1" heißt für Mindestens 1.
+			maxOccurs="unbounded" heißt, keine Grenze nach oben für Anzahl
+			-->
+
+			<xs:element name="Labor" minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+
+					<xs:sequence>
+							<!-- Für Jedes Labor-Element, für Computer ...
+							Das Attribut type ... definiert weitere Unterlemente, Attribute und etc. für das Element: Beispiel für Computertype - Erklärung unten...
+							-->
+							<xs:element name="Computer" type="ComputerType" minOccurs="1" maxOccurs="unbounded">
+								<!--
+								 Unique ist für die Eindeutigkeit einer Sache:
+								 Mit Selector wählt man die Definition des Pfades.
+								 Mit field wählt man, woraus sich die Eindeutigkeit beziehen soll: Beim Beispiel <xs:field xpath="@Id"/> soll das Attribut als ID, unique sein.
+								 -->
+								<xs:unique name="SoftwareaufRechner">
+        							<xs:selector xpath=".//xt:Software2"/>
+     			   					<xs:field xpath="@Id"/>
+   			 					</xs:unique>
+   			 					<!-- Software soll Computer spezifisch Unique sein, nicht über mehrere Computer in einem Labor oder insgesamt -->
+							</xs:element>
+
+							<!-- ... Element für Software ... -->
+							<xs:element name="Software" type="Softwareart" minOccurs="0" maxOccurs="unbounded">
+
+							</xs:element>
+
+							<!-- ... Element für weitere Geraete ... -->
+							<xs:element name="weitere_Geraete" type="Weiteres" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+					<!-- FÜr jedes Laborelement, das Attribut Name und Raumnummer -->
+					<xs:attribute name="Name" type="xs:string"/>
+					<xs:attribute name="Raum" type="xs:string"/>
+				</xs:complexType>
+				 <!-- Softwarename ist eindeutig -->
+				<xs:unique name="UniqueRechnerSoftwareKey">
+        			<xs:selector xpath=".//xt:Softwarename"/>
+     			   <xs:field xpath="."/>
+   			 	</xs:unique>
+				<!-- Software ist eindeutig:
+				Wir haben hierbei für das Attribut ID von dem Element Software, einen Schlüssel deklariert, durch <xs:key> ... Der Name der Schlüssel ist niqueRechnerSoftware
+				-->
+   			 	<xs:key name="UniqueRechnerSoftware">
+        			<xs:selector xpath=".//xt:Software"/>
+     			   <xs:field xpath="@ID"/>
+   			 	</xs:key>
+				<!-- Jeder Rechner ist eindeutig, durch Schlüssel -->
+   			 	<xs:key name="UniqueRechner">
+        			<xs:selector xpath=".//xt:Computer"/>
+     			   <xs:field xpath="@RechnerId"/>
+   			 	</xs:key>
+				<!-- Weitere Geräte ist eindeutig -->
+   			 	<xs:key name="UniqueEquipment">
+        			<xs:selector xpath=".//xt:weitere_Geraete"/>
+     			   <xs:field xpath="@WeiteresID"/>
+   			 	</xs:key>
+				<!--
+				Mit keyref deklariert man einen Fremdschlüssel
+				Fremdschlüssel referenziert auf Schlüssel von SoftwareID
+				Die ID muss als Schlüssel einer Software vorhanden sein
+				 -->
+   			 	<xs:keyref name="Softwareid" refer="UniqueRechnerSoftware">
+           			<xs:selector xpath=".//xt:Software2"/>
+         		   	<xs:field xpath="@Id"/>
+      			 </xs:keyref>
+
+			</xs:element>
+		</xs:sequence>
+		</xs:complexType>
+		<!-- Raum von Labor ist eindeutig, durch Attribut -->
+		 <xs:unique name="UniqueLabor">
+        	<xs:selector xpath=".//xt:Labor"/>
+     		<xs:field xpath="@Raum"/>
+   		</xs:unique>
+		<!-- Name von Labor ist eindeutig, durch Attribut -->
+   		<xs:unique name="UniqueLaborName">
+        	<xs:selector xpath=".//xt:Labor"/>
+     		<xs:field xpath="@Name"/>
+   		</xs:unique>
+
+	</xs:element>
+	<xs:complexType name="ComputerType">
+		<!-- Beispiel Fort: ... -->
+
+		<xs:sequence>
+			<!-- Weitere Unterelemente für Computer deklarieren -->
+			<xs:element name="Betriebssystem" type="xs:string"/>
+			<xs:element name="Anschaffung" type="xs:date"/>
+			<xs:element name="Erweiterungen" type="Mehr" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Rechnerbeschreibung" type="Beschreibungstyp"/>
+			<xs:element name="Rechnerbesonderheiten" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Software2" type="Softwareref" minOccurs="0" maxOccurs="unbounded">
+
+
+			</xs:element>
+		</xs:sequence>
+		<!-- Attribut für Computer deklarieren -->
+		<xs:attribute name="RechnerId" type="xs:string"/>
+
+	</xs:complexType>
+
+	<xs:complexType name="Softwareart">
+		<!-- Weitere Beschreibung als Element für Software hinzufügen -->
+		<xs:sequence>
+			<xs:element name="Softwarename" type="xs:string">
+
+			</xs:element>
+			<xs:element name="Softwarebeschreibung" type="Beschreibungstyp"/>
+			<xs:element name="Softwarebesonderheiten" type="xs:string"/>
+		</xs:sequence>
+		<!-- Attribut als ID für Software hinzufügen -->
+		<xs:attribute name="ID" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="Softwareref">
+		<!-- Für Software 2, Attribute hinzufügen, für lizenziert und ID -->
+		<xs:sequence>
+		</xs:sequence>
+		<xs:attribute name="lizensiert" type="xs:boolean" default="true"/>
+		<xs:attribute name="Id" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="Weiteres">
+		<!-- Für weitere Geräte, Elemente hinzufügen, für Art des Softwares und für die Beschreibung dessen -->
+		<xs:sequence>
+			<xs:element name="Art" type="xs:string"/>
+			<xs:element name="Beschreibung" type="Beschreibungstyp"/>
+		</xs:sequence>
+		<!-- Attribut für weitere Geräte -->
+		<xs:attribute name="WeiteresID" type="xs:string"></xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="Beschreibungstyp" mixed="true">
+		<!-- Hersteller für die Angabe von Hersteller, für alles was einen Hersteller hat. -->
+		<xs:sequence>
+			<xs:element name="hersteller" type="xs:string" minOccurs="0" maxOccurs="unbounded" form="qualified"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Mehr">
+		<!-- Für Erweiterungen eines Computers, sollen Beschreibungen für Hersteller und Besonderheiten eines Computers als Elemente deklariert sein. -->
+		<xs:sequence>
+			<xs:element name="Beschreibung" type="Beschreibungstyp"/>
+			<xs:element name="Besonderheiten" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
+

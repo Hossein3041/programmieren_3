@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- file: testDateNamespaces01a.xsd -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="testDateNamespace01"
+           xmlns="NamespaceInSchema"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+    <xs:element name="example" type="xs:date"/>
+</xs:schema>
+
+<!--
+targetNamespace: Namensraum für die durch name deklarierten Elemente
+
+xmlns: Standardnamensraum für das Schema über den Elemente ohne Namenspräfix innerhalb der Schemadeklaration angesprochen werden.
+(Kann auch weggelassen werden; wird in der Regel identisch zu targetNamespace gewählt)
+
+elementFormDefault: legt fest, dass die definierten Elemente nur "qualifiziert" über den Namensraum (targetNamespace) angesprochen werden dürfen
+
+attributeFormDefault: dito für die Attribute
