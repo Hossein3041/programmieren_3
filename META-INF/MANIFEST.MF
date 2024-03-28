@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Main-Class: main.java.org.example.RssFilterStax
+Class-Path: jakarta.xml.bind-api-4.0.1.jar jakarta.annotation-api-2.1.1.
+ jar jaxb-runtime-4.0.4.jar jaxb-core-4.0.4.jar istack-commons-runtime-4
+ .1.2.jar javax.activation-api-1.2.0.jar jaxb-impl-2.3.3.jar angus-activ
+ ation-2.0.1.jar jakarta.activation-2.0.1.jar jaxb-api-2.3.1.jar jakarta
+ .activation-api-2.1.2.jar txw2-4.0.4.jar
+
