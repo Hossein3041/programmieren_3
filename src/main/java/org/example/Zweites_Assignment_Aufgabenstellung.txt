@@ -1,0 +1,95 @@
+Das zweite Assignment:
+
+In Java, ein Filterprogramm schreiben:
+Von einem RSS-Feed, Nachrichten nach bestimmten Schlüsselwörtern durchsuchen, - in ein XML-Datei speicher:
+
+Von einem RSS-Feed, item-Elemente herausfiltern, in deren description-Element, als Textinhalt, folgende Wörter auftreten:
+-> Android, Java, Welt, Mensch oder Berlin
+-> Es gelten auch Wortbestandteile: z.B.: Menschheit, oder Umwelt.
+
+Welcher Feed foll verarbeitet werden?
+- den richtigen Feed dem Programm als Laufzeitparameter übergeben.
+- Beispielhafte Feeds zur Untersuchung: Tagesschau, Der Spiegel, heise online News
+
+Filterprogramm erstellen:
+- Zur Verarbeitung des Feeds: Iterator_API von StAX
+    -> Für jeden Treffer:
+        - Vollständiger Text von description zusammen mit anderen wichtigen Angaben zum item in ein neues XML-Dokument.
+- Speichern der Treffer: JAXB
+    -> Für jeden Treffer-Dokument:
+        - Geeignetes XML-Schema erstellen
+        - Namensraum: > assignment02.webprog.de
+                      > RssFilterStax verwendet Namensraum als explizit benannten Namensraum, mit Präfix stax
+
+Zugriff auf Treffer-Dokument:
+- Innerhalb des Filterprogramms durch JAXB
+- Unter Verwendung des JAXB-Binding Compilers xjc, zum Schema, passende Datenklassen generieren
+- Jeder Aufruf des Filterprogramms:
+    -> Löscht alle bisherigen Einträge
+    -> Nimmt die aktuelle gefundenen Treffer in das Dokument auf
+    -> Beim Speichern der Daten im Treffer-Dokument, Validierung gegen das Schema durchführen
+
+- RssFilterStax in Java unter Verwendung der Java Version 21 erstellen
+- JAXB in der Version 4.0.x verwenden
+- Einsatz zusätzlicher Bibliotheken nicht erlaubt
+
+Ausführen des Filterprogramms vereinfachen:
+- Dafür eine eigene jar-Datei RssFilterStax.jar erstellen:
+    -> Enthält sämtliche Abhängigkeiten und kann direkt ausgeführt werden:
+       Beispiel: java -jar RssFilterStax.jar https://www.tagesschau.de/xml/rss2
+
+- (jar-Datei soll Feed aufnehmen, in Java-Datei reintun,
+   und dann soll in Java-Programm überprüft werden, ob Feed gefragt ist.
+   In Jav-Datei, im Voraus die gefragten Feeds testen)
+
+- Code verständlich kommentieren
+
+Tipps:
+- Testdaten für ein Beispiel-Feed erstellen, um von Live-Feeds unabhängig werden, - während testen und implementieren.
+- Innerhalb von description können auch Entities (z.B.: &quot; ,apos> &apos; , &gt;) vorkommen.
+
+Technisches Vorgehen:erstellen
+1. Test-Feed erstellen mit Testdaten
+2. Java-Programm erstellen:
+    - Jar-Datei erstellen (RssFilterStax.jar), - Feed von Außen in das Programm eingeben:
+        -
+    - Testen, ob Feed von Tagesschau, Der Spiegel oder heise online News ist
+    - Falls ja, dann Feed als Laufzeitparameter nehmen
+    - Iterator-API: Die richtigen item-Elemente, anhand von description,
+      Wörtern heraussuchen, - auch mit Wortbestandteile.
+      !! Entities ebenfalls beachten!! Innerhalb von description können auch Entities vorkommen
+       -> Falls die Nachrichten gefragt sind:
+       Vollständer Text von description + andere wichtige Angaben in ein neues XML-Dokument
+
+       -> Falls die Nachrichten nicht gefragt sind:
+       Text: Nachrichten sind nicht gefragt.
+
+    - Für jede Treffer-Nachricht - durch JAXB:
+        -> Ein neues Treffer-Dokument erstellen + Geeignetes XML-Schema erstellen
+        -> Namensraum: - assignment02.webprog.de
+                       - RssFilterStax verwendet Namensraum als explizit benannten Namensraum, mit Präfix stax
+        -> Marshalling (Java zu XML)
+         - Durch JAXB auf Treffer-Nachrichten zugreifen
+         - Unter Verwendung des JAXB-Binding Compilers xjc, zum Schema, passende Datenklassen generieren
+         - Jeder Aufruf des Filterprogramms:
+            - Löscht alle bisherigen Einträge aus Treffer-Dokument
+            - Nimmt die aktuelle gefundenen Treffer in das Dokument auf
+            - Beim Speichern der Daten im Treffer-Dokument, Validierung gegen das Schema durchführen
+
+Zum Validieren und Gültigkeit eines RSS-Feeds, siehe Link unter dem 2. Assignment
+
+Java Version 21 verwenden:
+File -> Project structure -> project
+
+Laufzeitparameter verwernden. Den Code auf Laufzeitparameter umstellen.
+Testdatei als Link umwandeln und in die Datei als Link eingeben
+
+jakarta.xml.bind Pakete müssen installieren werden - Recherchieren, wie ich das machen soll.
+
+In java-Code Namespace einfügen
+
+In Artikel.xml muss der Namespace auftauchen
+
+Danach jar-Datei erstellen und mit dem Code verbinden
+
+

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://assignment02.webprog.de"
+           xmlns:stax="http://assignment02.webprog.de"
+           elementFormDefault="qualified">
+
+    <!--
+    Wurzelelement wird definiert als items, vom Typ ItemsType
+    -->
+    <xs:element name="items" type="stax:ItemsType"/>
+
+    <!--
+    Restliche Komplexen werden definiert
+    -->
+    <xs:complexType name="ItemsType">
+        <xs:sequence>
+            <!--
+   Item Element wird defiert, für jeden gefundenen Item. Mindestens null, maximal keine Grenze
+            -->
+            <xs:element name="item" type="stax:ItemType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ItemType">
+        <xs:sequence>
+            <!-- UNterelemente von Item. Alls als String. Aber Link als URL -->
+            <xs:element name="title" type="xs:string"/>
+            <xs:element name="link" type="xs:anyURI"/>
+            <xs:element name="description" type="xs:string"/>
+            <xs:element name="pubDate" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

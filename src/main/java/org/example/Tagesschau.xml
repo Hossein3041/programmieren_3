@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Beispiel Nachrichten Feed aus Tagesschau</title>
+        <link>http://www.beispielnewsfeed.com</link>
+        <description>Dies ist ein Beispiel für einen RSS-Feed mit fiktiven Nachrichten.</description>
+        <language>de-de</language>
+        <lastBuildDate>Mon, 10 Jan 2024 12:00:00 GMT</lastBuildDate>
+
+        <item> <!-- Android -->
+            <title>Neue Entwicklung in der Android-Technologie</title>
+            <link>http://www.beispielnewsfeed.com/android-technologie</link>
+            <description>Ein Durchbruch in der Android-Technologie könnte die Art und Weise, wie wir Smartphones nutzen, verändern. &quot;Android Everywhere&quot; ist das neue Motto.</description>
+            <pubDate>Tue, 11 Jan 2024 09:00:00 GMT</pubDate>
+        </item>
+
+        <item>
+            <title>Große Fortschritte in der Quantencomputertechnologie</title>
+            <link>http://www.beispielnewsfeed.com/quantencomputer</link>
+            <description>Die neuesten Entwicklungen in der Quantencomputertechnologie übertreffen alle Erwartungen.</description>
+            <pubDate>Fri, 14 Jan 2024 08:00:00 GMT</pubDate>
+        </item>
+
+        <item> <!-- Welt -->
+            <title>Revolutionäre Batterietechnologie vorgestellt</title>
+            <link>http://www.beispielnewsfeed.com/batterietechnologie</link>
+            <description>Ein Start-up-Unternehmen stellt eine neue, umweltfreundliche Batterietechnologie vor. Diese Technologie könnte die &apos;Welt&apos; der Energie revolutionieren.</description>
+            <pubDate>Mon, 17 Jan 2024 11:00:00 GMT</pubDate>
+        </item>
+
+        <item>
+            <title>Klimawandel fordert innovatives Denken</title>
+            <link>http://www.beispielnewsfeed.com/klimawandel</link>
+            <description>Forscher diskutieren neue Ansätze zur Bekämpfung des Klimawandels.</description>
+            <pubDate>Sat, 15 Jan 2024 09:30:00 GMT</pubDate>
+        </item>
+
+        <item> <!-- Java, Berlin -->
+            <title>Java Konferenz in Berlin angekündigt</title>
+            <link>http://www.beispielnewsfeed.com/java-konferenz</link>
+            <description>Die jährliche Java-Konferenz findet dieses Jahr in Berlin statt, mit vielen interessanten Vorträgen und Workshops. Experten sagen: &quot;Java verändert Berlin.&quot;</description>
+            <pubDate>Wed, 12 Jan 2024 10:00:00 GMT</pubDate>
+        </item>
+
+        <item> <!-- Welt -->
+            <title>Internationale Weltraumstation empfängt neue Crew</title>
+            <link>http://www.beispielnewsfeed.com/weltraumstation-crew</link>
+            <description>Die internationale Weltraumstation wird eine neue Crew von Astronauten aus verschiedenen Ländern empfangen.</description>
+            <pubDate>Thu, 13 Jan 2024 11:00:00 GMT</pubDate>
+        </item>
+
+        <item>
+            <title>Große Fortschritte in der Quantencomputertechnologie</title>
+            <link>http://www.beispielnewsfeed.com/quantencomputer</link>
+            <description>Die neuesten Entwicklungen in der Quantencomputertechnologie übertreffen alle Erwartungen.</description>
+            <pubDate>Fri, 14 Jan 2024 08:00:00 GMT</pubDate>
+        </item>
+
+        <item> <!-- Mensch, Welt -->
+            <title>Entdeckung eines neuen Exoplaneten für den Menschen</title>
+            <link>http://www.beispielnewsfeed.com/exoplanet</link>
+            <description>Astronomen entdecken einen Exoplaneten, der das Potenzial für das Leben der Menschen und im Allgemeinen für die gesamte Menschheit, außerhalb der Erde haben könnte. &lt;Eine neue Welt&gt;</description>
+            <pubDate>Sun, 16 Jan 2024 10:45:00 GMT</pubDate>
+        </item>
+
+    </channel>
+</rss>
