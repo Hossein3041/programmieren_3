@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- file: testElementContentNamespace03.xml -->
+<example
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="Namespace03"
+        xmlns:date="testDateNamespace01"
+        xsi:schemaLocation=
+                "Namespace03 testElementContentNamespace03.xsd
+testDateNamespace01 testDateNamespace01a.xsd">
+    <one>text</one>
+    <date:example>2005-02-28</date:example>
+</example>

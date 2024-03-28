@@ -1,0 +1,299 @@
+9.4 JAXB ("Jakarta XML Binding")
+
+Nachteile der XML-APIs SAX oder DOM:
+-   sehr komplex (insbesondere für einfache Anwendungsfälle)
+-   aus Sicht von Java teilweise umständlich,
+    -> die APIs sprachunabhängig und damit sehr allgemein definiert
+
+-   Programmierer braucht gute XML-Kenntnisse
+    (Umgang mit Begriffen: Element, Attribut, [ignorable]whitespace, parent, sibling)
+
+Wünschenswerte Eigenschaften einer einfacheren XML-API für Java:
+-   XML-Details vor dem Programmierer verbergen
+-   Abbildung des XML-Dokuments in eine Java-Repräsentation
+-   Zugriff auf Daten über get- und set-Methoden
+    (Java Beans-Konzept)
+-   Bei Bedarf "Validierung" der Java-Repräsentation gegen ein Schema
+-   Möglichkeit einer Speicherung der Java-Repräsentation in einem XML-Dokument
+->  JAXB ("Jakarta XML Binding")
+
+Bestandteile einer JAXB-Anwendung (Komponenten einer JAXB-Anwendung & Prozess des Bindens von Java-Objekten an XML-Dokumente:
+
+-   XML-Schema: Definiert Struktur und Beziehungen der Elemente eines gültigen XML-Dokumentes für eine Anwendung
+-   XML-Eingabedokument: XML-Dokument, das in eine interne Java-Repräsentation umgewandelt wird - ein Prozess bekannt als "Unmarshalling"
+-   XML-Ausgabedokument: XML-Dokument, das aus der internen Java-Repräsentation generiert werden kann - ein Prozess bekannt als "Marshalling"
+-   JAXB-Implementierung: Framework, das Mechanismen für Unmarshalling, Marshalling und Validierung der Java-Repräsentation bereitstellt.
+-   Binding Compiler: Tool, um aus XML-Schema Java-Datenklassen zu erzeugen, welche dann verwendet werden, um die Java-Repräsentation des XML-Dokuments zu bilden.
+-   Erzeugte Datenklassen: Vom Compiler basierend auf dem XML-Schema erstellten Klassen.
+-   Java-Anwendung: Verwendet Datenklassen & steuert Unmarshalling, Marshalling und Validierung
+
+-   Anpassung der Umsetzungsregeln (optional):
+    Sollten die Standardregeln nicht ausreichen, so können sie angepasst werden (weiter unter der Folie)
+
+Abläufe beim Einsatz von JAXB
+1. Vorbereitung:
+-   Es muss ein W3C-Schema vorhanden sein, das die Syntax der XML-Dokumente definiert.
+-   Durch Binding Compiler werden Java-Datenklassen aus dem Schema erzeugt:
+    Dies kann durch xjc-Kommando, einem Skript oder durch Integration in eine Build-Umgebung wie Ant in Eclipse erfolgen.
+-   Beispielbefehl:
+    xjc -p jaxb.script -d foo -xmlschema script.xsd
+    generiert aus W3C-Schema script.xsd die Java-Datenklassen, platziert sie im Verzeichnis foo und ordnet sie dem Paket jaxb-script zu.
+-   Zusätzlich zu Datenklassen: ObjectFactory wird erzeugt, ermöglicht zur Laufzeit, neue Instanzen der Datenklassen zu erzeugen.
+    Für jede Datenklasse gibt es eine zugehörige create-Methode.
+
+2. Anwendung:
+-   Unmarshalling: Umwandlung von XML-Dokumenten in Java-Datenklassen
+-   Benutzen der Datenklassen: Erzeugte Java-Objekte werden im Code verwendet
+-   Marshalling: Umwandlung der Java-Datenklassen zurück in XML-Dokumente
+-   Validierung: Überprüfung der Java-Objekte gegen das W3C-Schema
+
+Abbildung von XML-Namen auf Java-Bezeichner
+-   Abbildungsalgorithmus:
+    JAXB versucht, die im XML-Schema verwendeten Namen (für Elemente, Attribute, Typen usw.) in entsprechende Java-Bezeichner zu konvertieren.#
+-   Möglicke Konflikte:
+    ->  Sonderzeichen:
+    XML-Namen dürfen mehr Sonderzeichen enthalten, als in Java-Bezeichnern erlaubt sind.
+    ->  Reservierte Wörter:
+    Namen, die in XML zulässig sind, können in Java reservierte Schlüsselwörter sein (z.B. abstract, String)
+    ->  Namensraum-Konflikte:
+    Im XML-Namensraum kann derselbe Name mehrfach verwendet werden, z.B.:
+    für ein Element, Attribute, Attribute verschiedener Elemente.
+-   Lösungsansätze:
+    ->  Anpassung der JAXB-Compiler-Regeln:
+    Durch Anpassung der Standardregeln der JAXB-Compiler können solche Konflikte behoben werden.
+    ->  Vorausschauender Schema-Entwurf:
+    Wird empfohlen: Beim Entwurf des XML-Schemas mögliche Namenskonflikte zu berücksichtigen,
+    um spätere Probleme zu vermeiden.
+
+Abbildung einfacher XML-Datentypen:
+-   Einfache XML-Datentypen werden in entsprechened Java-typen abgebildet:
+
+__________________________________________
+XML-Datentyp        -       Java-Datentyp
+__________________________________________
+xs:string               java.lang.String
+xs:integer              java.math.BigInteger
+xs:int                  int
+xs:decimal              java.math.BigDecimal
+xs:float                float
+xs:double               double
+xs:boolean              boolean
+xs:date                 java.util.Calender
+xs:hexBinary            byte[]
+__________________________________________
+
+Abbildung komplexer XML-Datentypen:
+-   Für jede Komponente des Komplexen Datentypes (z.B. Elemente oder Attribute)
+    werden entsprechende get- und set-Methoden definiert
+
+-   Wiederholungen von Elementen werden mithilfe von Listen als java.util.List abgebildet
+    Hinweis:    Zum Sicherstellen der Typsicherheit werden Generics verwendet
+
+Beispiel zur Abbildung komplexer Datentypen: script.xsd
+Element courseDoc besitzt einen komplexen Datentyp:
+<!-- <!ELEMENT courseDoc (abstract, chapter+) -->
+<xs:element name="courseDoc">
+    <xs:complexType>
+        <xs:sequence>
+            <xs:element ref="abstract"/>
+            <xs:element maxOccurs="unbounded" ref="chapter"/>
+        </xs:sequence>
+        <!-- <!ATTLIST courseDoc title CDATA #REQUIRED> -->
+        <xs:attribute name="title" use="required"/>
+    </xs:complexType>
+</xs:element>
+
+Der JAXB-Compiler erzeugt für das XML-Element courseDoc die Datenklasse CourseDoc mit den folgenden Methoden:
+
+// Zugriff auf Element "abstract"
+public String getAbstract();
+public void setAbstract(String value);
+
+// Zugriff auf Attribut "title"
+public String getTitle();
+public void setTitle(String value);
+
+// Zugriff auf Sequenz des Elements "chapter"
+public List<Chapter> getChapter();
+
+Unmarshalling
+-   Unmarshalling: Umwandeln einer XML-Struktur in interne Java-Repräsentation
+-   Umwandlung wird von Methode
+        java.lang.Object unmarshall(quelle) im Interface jakarta.xml.bind.Unmarshaller
+    durchgeführt und liefert eine Instanz der Datenklasse des XML-Wurzelelements.
+
+-   Als Quelle in der unmarshall-Methode - z.B.:
+    Instanz von File, von InputStream, eine SAX-Eingabequelle (InputSource) oder ein DOM-Knoten (Node)
+
+-   Instanzen von Unmarshaller liefert die Methode:
+    Unmarshaller createUnmarshaller() der Klasse jakarta.xml.bind.JAXBContext
+
+Marshalling
+-   Marshalling: Umwandeln einer internen Datenklasse in eine XML-Struktur
+-   Umwandlung wird von Methode
+    void marshall(Object object, ziel) im Interface
+        jakarta.xml.bind.Marshaller
+    durchgeführt.
+-   Als Ziel in der marshall-Methode - z.B.:
+    Instanz von Writer, von OutputStream, ein SAX ContentHandler oder ein DOM-Knoten (Node) verwendet werden.
+-   Instanzen von Marshaller liefert die Methode
+    Marshaller, createMarshaller() der Klasse JAXBContext
+Bemerkung: Formatierte Ausgabe durch Marshaller durch Setzen einer entsprechenden Properts:
+    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+
+Validierung
+Validierung der Java-Repräsentation kann in Standard-JAXB-Implementierung an zwei Stellen erfolgen:
+
+Unmarshall-Validierung: Validierung erfolgt direkt bei Umwandlung in interne Repräsentation
+    Dazu Unmarshaller-Instanz über Methode setSchema eine Instanz des entsprechenden W3C-Schemas üergeben
+    (der Wert null schaltet die Validierung wieder aus; default: ausgeschaltet)
+
+Marshall-Validierung: Entsprechend beim Speichern des XML-Dokuments durch vorheriges setSchema in der Marshaller-Instanz.
+
+Beispiel zu JAXB (1)
+AUFGABE: Das XML-Dokument script.xml soll in eine interne Java-Repräsentation überführt und von dort Angaben über die enthaltenen Kapitel ausgegeben werden:
+Vorgehen:
+1. Vorbereitung: Erzeugen der Datenklassen anhand des Schemas script.xsd in das Paket jaxb.script
+2. Erzeugen einer Instanz von JAXBContext für die erzeugten Datenklassen:
+    JAXBContext jaxbContext = JAXBContext.newInstance("jaxb.script");
+3. Erzeugen eines Objektes zur Umwandlung eines konkreten XML-Dokuments und Einlesen des Dokuments
+    script.xml;
+    Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+    CourseDoc courseDoc = (CourseDoc) unmarshaller.unmarshal(new FileInputStream));
+4. Zugriff auf die Liste der Kapitel des Skripts:
+    List<Chapter> chapterList = courseDoc.getChapter();
+
+5. Darstellen der Kapiteldaten;
+void printChapterList(List<Chapter> List){
+    list.forEach(chapter ->{
+        System.out.printf("Chapter: \"%s\",
+            important: \"%s\", " + "interest: \"%s\",
+            sparepages: \"%s\"n",
+            chapter.getHeading(), chapter.getImportant(),
+            chapter.getInterest(), chapter.getSparePages());
+        chapter.getPara().forEach(para ->
+            System.out.printf(" Para: \"%s\"\n", para));
+    } );
+}
+
+Beispiel zu JAXB (2)
+AUFGABE: Wie vorher, jedoch soll in jedem Kapitel ein neuer Absazu angehängt werden.
+Lösung:
+
+void modifyChapter(CourseDoc courseDoc){
+    courseDoc.getChapter().forEach(chapter -> chapter.getPara().add("Dies ist neu! (" + new Date() + ")"));
+    }
+}
+
+Beispiel zu JAXB (3)
+AUFGABE: Es soll ein neues Kapitel vor allen anderen Kapiteln hinzugefügt werden.
+Lösung:
+void addChapter(CourseDoc courseDoc){
+    ObjectFactory factory = new ObjectFactory();
+    try{
+        Chapter chapter = factory.createChapter();
+        Chapter.setHeading("Ein neues Kapitel");
+        chapter.setSparePages(2);
+        chapter.getPara().add("neuer Absatz");
+        courseDoc.getChapter().add(0, chapter);
+    } catch(Exception e){ /* ... */ }
+}
+
+Beispiel zu JAXB (4)
+AUFGABE: Wie vorher, jedoch soll sowohl beim Einlesen als auch beim Speichern eine Validierung stattfinden.
+Lösung:
+Unmarshaller unmarshaller = ...
+SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+Schema schema = sf.newSchema(new File(SchemaFile));
+unmarshaller.setSchema(schema);
+CourseDoc courseDoc = (CourseDoc) unmarshaller.unmarshal(new FileInputStream(inFile));
+... modify courseDoc
+Marshaller marshaller = ...
+marshaller.setSchema(schema);
+marshaller.marshal(courseDoc, new FileOutputStream(outFile));
+
+Bemerkung zur Validierung
+AUFGABE: Datenstruktur validieren, ohne die Daten in eine XML-Datei zu schreiben - wie geht das?
+Lösung: Als Ausgabe einen SAX DefaultHandler verwenden, der auf keine Events reagiert:
+
+Marshaller tempMarshaller = jaxbContext.createMarshaller();
+tempMarshaller.setSchema(schema);
+try{
+    tempMarshaller.setSchema(schema);
+} catch(Exception e){ ... }
+
+oder besser im Marshaller einen ValidationEventHandler implementieren (Implementeriung zur Übung)
+
+Speichern von Binärdaten:
+Zu folgendem Schema werden JAXB-Klassen erzeugt:
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="example">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="description" type="xs:string"/>
+                <xs:element name="data" type="xs:hexBinary"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+
+Methoden der erzeugten Klasse Example:
+public class Example{
+    public String getDescription() { ... }
+    public void setDescription(String value) { ... }
+    public byte[] getData() ...
+    public void setData(byte[] value) { ... }
+}
+
+Verwendung der Klasse als Übung ...
+Wie sieht eine erzeugte XML-Instanz von Example aus?
+
+Vererbung innerhalb von JAXB-Klassen
+Für die Erweiterung von chapter-Elementen in einer vorigen CourseDoc-Variante wird folgender Java-Code erzeugt:
+
+public class ChapterType{ ... }
+public class ChapterExamType extends ChapterType{...}
+public class CourseDoc{
+    ...
+    public List<ChapterType> getChapterOrChapterExam(){...}
+    ...
+}
+
+Zusammenfassung JAXB:
+JAXB:
+-   Ermöglicht einfacheres Arbeiten mit XML in Java im Vergleich zu SAX oder DOM
+
+Herausforderung bei SAX/DOM:
+-   Hohe Komplexität, - besonders für einfache Anwendung
+-   Nutzung von Java umständlich, aufgrund von sprachunabhängigkeit und allgemeine Definiton
+-   Erfordert tiefgehende XML-Kenntnisse
+
+Vorteile von JAXB:
+-   Verbirgt XML-Details vor dem Entwickler
+-   Ermöglicht Abbildung von XML-Dokumenten in Java-Objekte
+-   Zugriff auf Daten durch get- und set-Methoden (Java Beans-Konzept)
+-   Unterstützt Validierung von Java-Objekten gegen XML-Schema
+-   Speicherung von Java-Objekten in XML-Dokumenten möglich.
+
+Komponenten einer JAXB-Anwendung:
+-   XML-Schema
+-   XML-Eingabe- und Ausgabedokumente
+-   JAXB-Implementierung
+-   Binding Compiler
+-   Erzeugte Datenklassen
+-   Java-Anwendung
+
+Ablauf beim Einsatz von JAXB:
+-   Vorbereitung: Aus XML-Schema, Java-Klassen erzeugen
+-   Anwendung: Unmarshalling (XML zu Java), Marshalling (Java zu XML) und Validierung.
+
+Abbildung von XML auf Java:
+-   Konventierung von XML-Namen in Java-Bezeichner
+-   Handhabung von Namenskonflikten und SOnderzeichen
+-   Abbildung von einfachen und komplexen XML-Datentypen auf Java-Typen
+
+Praktische Anwendung:
+-   Lesen und Speichern von XML-Daten.
+-   Hinzufügen, Modifizieren und Validieren von XML-Elementen.
+-   Speicherung von Binärdaten in XML

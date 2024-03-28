@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="Assignment1.xsl"?>
+<Labordaten 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="assignment01.webprog.de Assignment1.xsd"
+    xmlns="assignment01.webprog.de">
+    <Labor Name="Labor01" Raum="Raum01">
+        <Computer RechnerId="Rechner01">
+            <Betriebssystem>Linux</Betriebssystem>
+            <Anschaffung>2002-09-24</Anschaffung>
+            <Erweiterungen>
+            	<Beschreibung>1 TB Festplatte von <hersteller>SeaGate</hersteller> nachgerüstet </Beschreibung>
+            </Erweiterungen>
+            <Rechnerbeschreibung>Leistungsstarker <hersteller>Lenovo</hersteller> Rechner, für Virtual Reality Programmierung geeignet
+           		 mit Grafikkarte von <hersteller>NVIDIA</hersteller>.
+            </Rechnerbeschreibung>
+            <Rechnerbesonderheiten>Kaputt,in Reparatur</Rechnerbesonderheiten>€
+            <Software2 lizensiert="true" Id="Java"/>
+        </Computer>
+        <Computer RechnerId="Rechner02">
+            <Betriebssystem>Windows</Betriebssystem>
+            <Anschaffung>2002-01-30</Anschaffung>
+            <Erweiterungen>
+            	<Beschreibung> Grafikkarte von <hersteller>NVIDIA</hersteller> nachgerüstet. </Beschreibung>
+            </Erweiterungen>
+            <Rechnerbeschreibung>   
+                  Perfekt für einfache Programmierung.
+            </Rechnerbeschreibung>
+            <Rechnerbesonderheiten>Gehäuse beschädigt</Rechnerbesonderheiten>
+            <Software2 lizensiert="true" Id="Eclipse"/>
+        </Computer>
+        <Computer RechnerId="Rechner03">
+            <Betriebssystem>Windows</Betriebssystem>
+            <Anschaffung>2002-04-25</Anschaffung>
+            <Erweiterungen>
+            <Beschreibung> Hallo diese Gra-Ka ist von<hersteller>NVIDIA</hersteller>  </Beschreibung>     
+            </Erweiterungen>
+            <Rechnerbeschreibung>  
+            		Eher für allgemeine Programmierung vorgesehen, nicht so leistungsstark.
+            		Von <hersteller>HP</hersteller>.
+            		Momentan nicht nutzbar.
+            </Rechnerbeschreibung>
+            <Rechnerbesonderheiten>Monitor und Tastatur fehlen</Rechnerbesonderheiten>
+            <Software2 lizensiert="false" Id="VIM"/>
+        </Computer>
+         <Software ID="OXygen">
+            <Softwarename>Oxygen</Softwarename>
+            <Softwarebeschreibung>
+            		Plug-In
+                    <hersteller>Oxygen</hersteller>
+            </Softwarebeschreibung>
+            <Softwarebesonderheiten>Plug-In für Eclipse</Softwarebesonderheiten>
+        </Software>
+        <Software ID="Eclipse">
+            <Softwarename>Eclipse</Softwarename>
+            <Softwarebeschreibung>IDE
+                    <hersteller>Eclipse</hersteller>
+            </Softwarebeschreibung>
+            <Softwarebesonderheiten>Version veraltet</Softwarebesonderheiten>
+        </Software>
+        <Software ID="Java">
+            <Softwarename>Java</Softwarename>
+            <Softwarebeschreibung>
+            		Programmierung
+                    <hersteller>Oracle</hersteller>
+            </Softwarebeschreibung>
+            <Softwarebesonderheiten>Objektorintierte Programmierungsprache</Softwarebesonderheiten>
+        </Software>
+        <Software ID="VIM">
+            <Softwarename>VIM</Softwarename>
+            <Softwarebeschreibung>
+            		Textverarbeitung
+                    <hersteller>vim</hersteller>
+            </Softwarebeschreibung>
+            <Softwarebesonderheiten>Sehr Leitungsstark</Softwarebesonderheiten>
+        </Software>
+        <weitere_Geraete WeiteresID="01">
+            <Art>Beamer</Art>
+            <Beschreibung>
+                    <hersteller>NVIDIA</hersteller>
+            </Beschreibung>
+        </weitere_Geraete>
+        <weitere_Geraete WeiteresID="02">
+            <Art>Drucker</Art>
+            <Beschreibung>
+                    <hersteller>HP</hersteller>
+            </Beschreibung>
+        </weitere_Geraete>
+    </Labor>
+    <Labor Name="Labor01" Raum="Raum02">
+        <Computer RechnerId="Rechner01">
+            <Betriebssystem>MAc OS</Betriebssystem>
+            <Anschaffung>2002-09-24</Anschaffung>
+            <Erweiterungen>
+            	<Beschreibung> Mainboard von <hersteller>MSI</hersteller> nachgerüstet, sowie 20 TB SSD von <hersteller>Samsung</hersteller> </Beschreibung>        
+            </Erweiterungen>
+            <Rechnerbeschreibung>   
+                    <hersteller>NVIDIA</hersteller>
+            </Rechnerbeschreibung>
+            <Rechnerbesonderheiten>Keine</Rechnerbesonderheiten>
+            <Software2 lizensiert="true" Id="Eclipse"/>
+        </Computer>
+        <Software ID="Eclipse">
+            <Softwarename>Eclipse</Softwarename>
+            <Softwarebeschreibung>
+                    <hersteller>Eclipse</hersteller>
+            </Softwarebeschreibung>
+            <Softwarebesonderheiten>Für Fortgeschrittene</Softwarebesonderheiten>
+        </Software>
+        <weitere_Geraete WeiteresID="01">
+            <Art>Beamer</Art>
+            <Beschreibung>
+                    <hersteller>NVIDIA</hersteller>
+            </Beschreibung>
+        </weitere_Geraete>
+    </Labor>
+</Labordaten>
+

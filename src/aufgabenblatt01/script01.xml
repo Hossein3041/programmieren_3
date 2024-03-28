@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE courseDoc SYSTEM "C:\Users\hosse\IdeaProjects\XMLHossein\src\aufgabenblatt01\script01.dtd">
+<courseDoc>
+    <title>1. Testen von XML-Dokumenten</title>
+    <abstract>Kurze Zusammenfassung</abstract>
+    <chapter>
+        <heading>Hallo Welt</heading>
+        <para> Absatz eins</para>
+        <para> Absatz zwei</para>
+    </chapter>
+    <chapter>
+        <heading>Welt Hallo</heading>
+        <para> Absatz eins</para>
+    </chapter>
+    <chapter>
+        <heading>Hallo Hallo Welt Welt</heading>
+        <para> Absatz eins</para>
+        <sparePages/>
+    </chapter>
+</courseDoc>

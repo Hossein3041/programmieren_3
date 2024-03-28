@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="Assignment1.xsl"?>
+<!-- Stylesheet zum Anzeigen der Datei im Browser eingebunden -->
+<Labordaten>
+    <Labor Name="Labor01" Raum="Raum01">
+        <Computer RechnerId="Rechner01">
+            <Betriebssystem> Windows </Betriebssystem>
+            <Anschaffung> 2002-06-05 </Anschaffung>
+            <Erweiterungen>
+                <Beschreibung> Der Computer, der von <hersteller> Lenovo </hersteller> herstellt wurde, ist gut und günstig, für Informatik-Studenten.</Beschreibung>
+                <Besonderheiten/>
+            </Erweiterungen>
+            <Rechnerbeschreibung> Die Bildschirmgröße ist 14 Zoll, und geeignet dafür, dass man damit auch während der Vorlesung tippt. </Rechnerbeschreibung>
+            <Rechnerbesonderheiten/>
+            <Software2 lizensiert="true" Id="01"> Die Software ist lizenziert. </Software2>
+        </Computer>
+        <Software ID="01">
+            <Softwarename>
+                Der Softwarename der auf dem Computer läuft, ist Windows.
+            </Softwarename>
+            <Softwarebeschreibung> Der installierte Software ist hergestellt worden von <hersteller> Microsoft </hersteller> und bekommt bis 2025 Updates. </Softwarebeschreibung>
+            <Softwarebesonderheiten/>
+        </Software>
+        <weitere_Geraete>
+            <Art> Drucker </Art>
+            <Beschreibung> Der Drucker, hergestellt von <hersteller> HP </hersteller> hat ebenfalls die Funktion, Dokumente zu scannen und zu faxen. </Beschreibung>
+        </weitere_Geraete>
+    </Labor>
+    <Labor Name="Labor02" Raum="Raum02">
+        <Computer RechnerId="Rechner02">
+            <Betriebssystem> Linux </Betriebssystem>
+            <Anschaffung> 2005-04-05</Anschaffung>
+            <Erweiterungen>
+                <Beschreibung> Der Computer von <hersteller> Google </hersteller> ist gut geeignet für Linux-Benutzer. </Beschreibung>
+            </Erweiterungen>
+            <Rechnerbeschreibung> Der Bildschirm des Rechners ist mit einem Touchpad ausgestattet. </Rechnerbeschreibung>
+            <Rechnerbesonderheiten/>
+            <Software2 lizenziert="false" Id="02"> Die Software hiervon hat keinen Lizenz. </Software2>
+        </Computer>
+        <Software ID="02">
+            <Softwarename> Der Softwarename von dem Rechner ist Linux </Softwarename>
+            <Softwarebeschreibung>Der Software ist hergestellt worden von <hersteller> Linus Torvalds </hersteller> am Ende der 90er Jahre. </Softwarebeschreibung>
+        </Software>
+        <weitere_Geraete>
+            <Art> Beamer </Art>
+            <Beschreibung> Der Beamer, hergestellt von <hersteller> HP </hersteller> zeigt 4k Bilder. </Beschreibung>
+        </weitere_Geraete>
+    </Labor>
+</Labordaten>

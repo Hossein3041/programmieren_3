@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- file: script01_namespace.xsd -->
+<!--
+Aufgaben:
+- Das Skript-Schema soll einen eigenen Namensraum
+targetNamespace="http://www.courseDoc.de"
+festlegen
+
+- Außerdem sollen in den para-Elementen neben Text
+auch MATHML-Ausdrucke aus dem Namensraum ¨
+xmlns:m="http://www.w3.org/1998/Math/MathML"
+erlaubt sein (Mixed Content).
+-->
+
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:m="http://www.w3.org/1998/Math/MathML"
+        xmlns="http://www.courseDoc.de"
+        targetNamespace="http://www.courseDoc.de"
+        attributeFormDefault="unqualified">
+    <!-- import schema declaration for MATHML -->
+    <xs:import namespace="http://www.w3.org/1998/Math/MathML"
+               schemaLocation=
+                       "http://www.w3.org/Math/XMLSchema/mathml2/mathml2.xsd"/>
+
+    <!-- change para declaration to allow mixed content -->
+    <xs:element name="para">
+        <xs:complexType mixed="true">
+            <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="m:math"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    ...
+</xs:schema>
+

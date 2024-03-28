@@ -1,0 +1,10 @@
+<?xml version ="1.0" encoding="UTF-8"?>
+        <!-- file: script01.dtd -->
+        <!-- einfache DTD fuer Skript-Dateien -->
+        <!ELEMENT courseDoc (title, abstract, chapter+)>
+        <!ELEMENT title (#PCDATA)>
+        <!ELEMENT abstract (#PCDATA)>
+        <!ELEMENT chapter (heading, para+, sparePages?)>
+        <!ELEMENT heading (#PCDATA)>
+        <!ELEMENT para (#PCDATA)>
+        <!ELEMENT sparePages EMPTY>

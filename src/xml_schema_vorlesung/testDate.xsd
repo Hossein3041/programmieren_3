@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- file: testDate.xsd -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="testDateNamespace01">
+    <xs:element name="example" type="xs:date"/>
+</xs:schema>
+<!-- targetNamespace definiert den Namensraum für das Element example deises Schemas (hier kein URL).
+ -->

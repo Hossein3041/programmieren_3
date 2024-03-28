@@ -1,0 +1,25 @@
+<component name="ArtifactManager">
+  <artifact name="org.example:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/org_example_jar</output-path>
+    <root id="root">
+      <element id="archive" name="org.example.jar">
+        <element id="directory" name="META-INF">
+          <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+        </element>
+        <element id="module-output" name="org.example" />
+      </element>
+      <element id="library" level="project" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:4.0.1" />
+      <element id="library" level="project" name="Maven: jakarta.annotation:jakarta.annotation-api:2.1.1" />
+      <element id="library" level="project" name="Maven: org.glassfish.jaxb:jaxb-runtime:4.0.4" />
+      <element id="library" level="project" name="Maven: org.glassfish.jaxb:jaxb-core:4.0.4" />
+      <element id="library" level="project" name="Maven: com.sun.istack:istack-commons-runtime:4.1.2" />
+      <element id="library" level="project" name="Maven: javax.activation:javax.activation-api:1.2.0" />
+      <element id="library" level="project" name="Maven: com.sun.xml.bind:jaxb-impl:2.3.3" />
+      <element id="library" level="project" name="Maven: org.eclipse.angus:angus-activation:2.0.1" />
+      <element id="library" level="project" name="Maven: com.sun.activation:jakarta.activation:2.0.1" />
+      <element id="library" level="project" name="Maven: javax.xml.bind:jaxb-api:2.3.1" />
+      <element id="library" level="project" name="Maven: jakarta.activation:jakarta.activation-api:2.1.2" />
+      <element id="library" level="project" name="Maven: org.glassfish.jaxb:txw2:4.0.4" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,41 @@
+Die Abkürzung JAXB steht für Jakarta XML Bindung. Die Nachteile der Nutzung von XML-APIs oder DOM
+sind, dass diese, besonders für einfache Anwendungsfälle, sehr komplex sind uns zudem aus Sicht
+von Java etwas umständlich sind. Zudem sind die APIs sprachunabhängig und damit sehr allgemein definiert.
+Ferne braucht der Programmierer, um diese zu nutzen, gute XML-Kenntnisse, wobei er mit den Begriffen wie
+Element, Attribut, [ignorable]whitespace, parend, sibling, sowie etc. umgehen muss.
+
+Die wünschenswerten Eigenschaften einer einfacheren XML-APIs für Java als Alternative sind es, dass man
+die XML-Details vor dem Programmierer verbergen kann. Zudem soll die Möglichkeit der Abbildung
+des XML-Dokuments in eine Java-Repräsentation ermöglicht werden. Ferner soll der Zugriff auf
+die Daten über die get- und set-Methoden ermöglicht sein (Java Beans-Konzept).
+Ebenfalls sollen bei Bedarf die "Validierung" der Java-Repräsentation gegen ein Schema möglich sein.
+
+Noch sollen demnach die Möglichkeit einer Speicherung der Java-Repräsentation in einem XML-Dokument
+ermöglicht sein. Dies alles erreicht man durch JAXB ("Jakarta XML Binding").
+
+Die Bestandteile/Komponente einer JAXB-Anwendung, sowie der Prozess des Bindens von Java-Objekten an XML-Dokumente,
+sind einmal das XML-Schema, mit der die Struktur und Beziehung der Elemente eines gültigen XML-Dokuments
+für eine Anwendung definiert werden. Zudem gibt es einmal das XML-Eingabedokument,
+welches in eine interne Java-Repräsentation umgewandelt wird, dessen Prozess als "Unmarshalling"
+besser bekannt ist. Im Gegenzug dazu gibt es einmal das XML-Ausgabedokument, welches aus der internen
+Java-Repräsentaion generiert werden kann, dessen Prozess in dem Falle als "Marshalling" bezeichnet wird.
+
+Unter der JAXB-Implementierung versteht man das Framework, mit dem Mechanismen für Unmarshalling,
+Marshalling und Validierung der Java-Repräsentation bereitgestellt wird. Binding Compiler hierzu ist
+ein Tool, mit dessen Nutzung aus dem XML-Schema Java-Datenklassen erzeugt werden können, welche dann wiederum,
+verwendet werden, um die Java-Repräsentation des XML-Dokuments zu bilden. Die erzeugten Datenklassen hierbei
+sind die vom Compiler, basierend auf dem XML-Schema, erstellten Klassen. Die Java-Anwendung verwendet Datenklassen
+und steuert die Prozesse Unmarshalling, Marshalling, sowie Validierung.
+
+Hinweis zu den Umsetzungsregeln (optional). Sollten die Standardregeln nicht ausreichen, so können diese
+angepasst werden.
+
+Spricht man von den Abläufen beim Einsatz von JAXB, so gilt zuerst die Vorbereitung, bei der
+ein W3C-Schema vorhanden sein muss, das die Syntax der XML-Dokumente definiert.
+Durch den sogenannten Binding Compiler werden die Java-Dateanklassen aus dem Schema erzeugt,
+welches durch xjc-Kommando, einem Skript oder durch Integration in eine Build-Umgebung wie Ant in Ecpilse
+erfolgt. Ein Beispielbefehl hierzu ist: xjc -p jaxb.script -d foo -xmlschema script.xsd,
+mit der aus W3C-Schema die script.xsd die Java-Datenklassen generiert werden, die dann im Verzeichnis
+foo platziert und diese dem Paket jaxb-script zugeordnet werden.
+
+
