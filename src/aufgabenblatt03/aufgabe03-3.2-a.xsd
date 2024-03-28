@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- file: aufgabe03-3.2-a.xsd -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:simpleType name="distance">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="(0 | [1-9]+)(,[0-9]{1,3})?(m|km)"/>
+            <!--
+             (0 | [1-9]+)
+             Vor dem Komma (Komma ist optional) soll entweder 0 oder beliebig viele Zahlen zwischen 1-9
+
+             (,[0-9]{1,3})?
+             Optional:
+             Komma, gefolgt von höchstens drei Ziffern zwischen 0-9
+             ? ist für höchstens, also für Optional
+
+             (m|km)
+             Auswahl zwischen m oder km
+            -->
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
+

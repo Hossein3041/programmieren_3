@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Exercise adopted from "http://catcode.com/cit041x/assignment1.html" -->
+<catalog>
+
+    <company>Office Magick</company>
+
+        <department name="Office Supplies" code="235">
+
+            <item>
+                <name>Stapler</name>
+			    <manufacturer>Bostitch</manufacturer>
+                <color-list>
+                    <color sku="S367-B" hex="#000000">black</color>
+                    <color sku="S367-PY" hex="#ffffcc">pastel yellow</color>
+                </color-list>
+                <price amt="8.95"> </price>
+                <summary>Heavy-duty office stapler</summary>
+                <description>
+                This stapler has a 30-sheet capacity and a lever
+                action for accurate placement.
+                </description>
+            </item>
+            <item>
+                <!-- On backorder - cannot restock. -->
+                <name>Notebook</name>
+                <color-list>
+                    <color sku="NB1783-G" hex="#00ff00">Green</color>
+                    <color sku="NB1783-Y" hex="#ffff00">Yellow</color>
+                    <color hex="#ff0000" sku="NB1783-R">Red</color>
+                </color-list>
+            </item>
+        </department>
+
+        <department code="240">
+            Computer Peripherals
+            <item>
+                <name>Mouse</name>
+                <color-list>
+                    <color sku="M-0115-LG" hex="#cccccc">Light Gray</color>
+                    <color hex="#ffffff">White</color>
+                    <price units="USD">10.95</price>
+                </color-list>
+            </item>
+        </department>
+</catalog>

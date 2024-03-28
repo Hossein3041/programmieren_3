@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- file: testElementContentNamespace03.xsd -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="Namespace03"
+           xmlns="Namespace03"
+           xmlns:date="testDateNamespace01">
+    <xs:import namespace="testDateNamespace01"
+               schemaLocation="testDateNamespace01a.xsd"/>
+    <xs:element name="one"/>
+    <xs:element name="example">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="one"/>
+                <xs:element ref="date:example"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

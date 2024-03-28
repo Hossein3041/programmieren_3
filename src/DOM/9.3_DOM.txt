@@ -1,0 +1,516 @@
+9.3 DOM ("Document Object Model")
+- Überblick über DOM, eine Programmierschnittstelle - für Zugriff auf Bestandteile von (XML-)Dokumenten.
+- Es werden verschiedene Schnittstellen zur Verfügung gestellt - mit jeweils spezifischen Funktionalitäten.
+- DOM ist in verschiedenen "Level" aufgeteilt:
+1. Level: - Grundfunktionalitäten werden etabliert - für Navigation durch Dokumente.
+2. Level: - Level 1 wird um Namensräume erweitert.
+3. Level: - Baut auf Level 2 auf - fügt zusätzlich Funktionen wie XPATH, Schemata und Validierung hinzu.
+
+- Jedes Level in DOM ist in mehrere Module aufgeteilt:
+    (Core, HTML, Events, Load and Save, etc.)
+- DOM-Spezifikation ist:
+    ->  objektorientiert
+    ->  plattform- und sprachneutral
+    ->  mit Implementierung in verschiedenen Sprachen wie Java, Perl, C++, ECMAScript.
+- DOM ursprünglich für Einsatz in Webbrowsern - für Zugriff über Skripte auf HTML-Elemente.
+- Später erweitert auf beliebige XML-Dokumente.
+
+Idee von DOM:
+
+1. Knotenpräsentation:
+Jedes Element im XML-Dokument wird dargestellt als eine Instanz einer "Knotenklasse".
+
+2. Baumstruktur:
+Knoteninstanzen baumartig miteinander verkettet - entsprechend ihrer Struktur im Dokument
+
+3. Knotenmethoden:
+In den Knoten befinden sich Methoden zum
+    - lesen
+    - ändern
+    - löschen
+    - modifizieren der Daten, sowie
+    - zur Navigation im Dokument
+
+4. Containerklassen:
+Es existieren Containerklassen oder Collections, zur Aufnahme von Knoten - z.B. Listen.
+
+5. Spezifikation und Implementierung
+- DOM definiert die Schnittstellen
+- Eigentliche Implementierung erfolgt durch DOM-Parser oder DocumentBuilder.
+- Implementierungen können sich unterscheiden - in interner Datenstruktur und verwendeten Algorithmen.
+
+6. API-Komplexität:
+Aufgrund von Komplexität der gesamten API:
+- Nur ausgewählte DOM-Schnittstellen werden vorgestellt.
+- Für vollständige Dokumentation - wird auf DOM-Spezifikation verwiesen.
+
+DOM Knoten:
+Folie beschreibt Konzept der DOM-Knoten:
+
+- Oberklasse 'Node':
+Im DOM ist das Interface 'org.w3c.dom.Node' die Oberklasse für alle Inhaltsarten, die im DOM dargestellt werden.
+Es umfasst Elemente, Texte, Attribute, Verarbeitungsanweisungen, CDATA-Abschnitte und andere.
+
+- Methoden in 'Node':
+Verschiedene Methoden im 'Node'-Interface definiert, um Knoten zu interagieren - dazu gehören:
+
+- short getNodeType(): Gibt den Typ des Knotens als Zahl zurück.
+- String getNodeName(): Liefert den Namen des Knotens, abhängig von dessen Typ.
+- NamedNodeMap getAttributes(): Gibt eine Datenstruktur mit Attributen des Knotens zurück, falls dieser ein Element ist.
+
+Zugriff auf die direkten Vorfahren bzw. Nachkommen:
+- boolean hasChildrenNodes()
+- Node getFirstChild()
+- Node getLastChild()
+- NodeList getChildNodes()
+- Node getParentNode()
+
+Zugriff auf die Geschwister
+- Node getPreviousSibling()
+- Node getNextSibling()
+
+Liefert das Dokument, zu dem der Knoten gehört
+- Document getOwnerDocument()
+
+Zum Ändern/Hinzufügen von Kindknoten
+- removeChild(Node oldChild),
+- insertBefore(Node newChild, Node refChild)
+- replaceChild(Node newChild, Node oldChild)
+- appendChild(Node newChild)
+
+Bearbeitet den Teilbaum mit dem Knoten als Wurzel so, dass benachbarte Textelemente
+zu einem Element zusammengefasst werden:
+- normalize()
+
+Wichtige Erweiterungen von Node
+
+- Element: Repräsentiert Elementknoten im DOM. Methoden umfassen:
+    -> String getTagName()
+    -> boolean hasAttribute(String name)
+    -> String getAttribute(String name) - liefert den Wert des entsprechenden Attributes
+    -> Attr getAttributeNode(String name) - liefert den entsprechenden Attributknoten
+    -> removeAttribute(String name)
+    -> setAttribute(String name, String value)
+    -> NodeList getElementByTagName(String tagName) - liefert alle Nachkommen des Elementtyps
+    tagName (Spezialfall: "*" passt auf alle Elementtypen!)
+
+- Attr: Stellt Attribut-knoten dar - jede Instanz bildet ein Attribut eines Elements ab
+    -> String getName() - liefert den Namen des Attributs
+    -> String getValue() - liefert den Wert
+    -> Element getOwnerElement() - liefert das zugehörige Element
+    -> boolean isID() Abfrage, ob das Attribut vom Typ ID ist
+    -> void setValue(String value) - zum Setzen eines neuen Wertes
+
+- CharacterData: Repräsentiert Daten, die aus Zeichenketten bestehen.
+Diese Klasse wird von 'Comment' und 'Text' erweitert.
+    -> int getLength()
+    -> String getData()
+    -> insertData(int offset, String arg)
+    -> setData(String data)
+
+- Comment: Bildet Kommentar-Knoten ab und erhebt von 'CharacterData'.
+
+- Text: Repräsentiert den Textinhalt von Elementen und erbt ebenfalls von 'CharacterData'
+    -> String getWholeText() - liefert den Text von aufeinanderfolgenden Textknoten als Einheit
+    -> replaceWholeText(String content) - ersetzt den Inhalt des Textknotens
+    -> boolean isElementContentWhiteSpace() - liefert true,
+    wenn es sich bei dem Text um "ignorable whitespace" handelt.
+
+- CDATASection: Stellt CDATA-Abschnitte dar und erbt von 'Text'
+
+- Document: Repräsentiert das gesamte Dokument (die Wurzel des Dokumentenbaums) -
+    Zu den Methoden gehören das Erstellen verschiedener Knotentypen:
+    ->  Element createElement(String tagName)
+    Factory-Methode zum Erzeugen eines Elementknotens innerhalb des Dokuments
+    ->  weitere Factory-Methoden analog, z.B.:
+        - Comment createComment(String co)
+        - Text createTextNode(String text)
+        - CDATASection createCDATASection(String data)
+        - Attr createAttribute(String name)
+    ->  normalizeDocument() - führt das Dokument in eine "Normalform" über
+        (wie in der Methode Node.normalize() beschrieben).
+    ->  Element getDocumentElement() - liefert das Wurzelelement des Dokuments
+    ->  String getDocumentURI()
+    ->  String getXmlVersion()
+    ->  Element getElementById(String idValue) -
+    liefert das (eindeutige) Element, das ein Attribut vom Typ ID mit dem Wert idValue besitzt
+    (oder null, falls keines im Dokument vorhanden ist)
+    ->  NodeList getElementByTagName(String tagName)
+    liefert alle im Dokument enthaltenen Instanzen des Elementtyps tagName
+    (Spezialfall: "*" passt auf alle Elementtypen!)
+
+- DocumentFragment:
+Ein Hilfskonstrukt - wird beim Erzeugen eines neuen Dokuments verwendet.
+Kann auch nicht wohlgeformte Inhalte aufnehmen.
+Wird eine 'DocumentFragment'-Instanz einem Knoten hinzugefügt,
+werden stattdessen ihre Kinder hinzugefügt.
+
+Containerklassen: Folie beschreibt zwei wichtige Containerklassen im DOM
+
+1. org.w3c.dom.NodeList:
+-   Funktion: Eine geordnete Liste von Knoten
+-   Methoden: -> getLength() - liefert die Länge der Liste
+              -> item(int index) - ermöglicht den Zugriff auf einen Knoten an einem bestimmten Index.
+-   Besonderheiten:
+    -> Keine spezifische Anforderung an die Datenstruktur
+    -> Nodelist ist nicht von 'java.util.Vector' oder 'java.util.List' abgeleitet
+    -> Klasse hat keine Set-Methode &
+       keine Factory-Methode in DOM für NodeList-Instanzen
+
+2. org.w3c.dom.NamedNodeMap:
+-   Funktion: Eine Datenstruktur - Knoten können über Namen angeprochen werden
+              Knoten werden nicht in einer bestimmten Reihenfolge gespeichert.
+-   Methode: -> getLength() - gibt die Anzahl der gespeicherten Elemente an
+             -> item(int i) - ermöglicht Zugriff auf das i-te Element.
+             -> getNamedItem(String name) - ermöglicht Zugriff auf einen Knoten über dessen Namen.
+             -> setNamedItem(Node arg) - dient der Aufnahme eines Knotens in die Datenstruktur.
+             Ein vorhandener Eintrag mit gleicher Name wird überschrieben.
+-   Besonderheiten:
+             -> NamedNodeMap ist kein Array
+             -> Ist nicht von java.util.Map abgeleitet.
+
+Diese Containerklassen sind zentral für Organisation und Handling von Knoten in DOM-Strukturen.
+
+Anwendug der DOM-API:
+Überführung von XML-Dokument in intere DOM-Darstellung - Schritte:
+1. Erzeugung einer DOM-Verarbeitungsinstanz:
+    ->  Bei Bedarf - Eigenschaften für Verarbeitung festlegen, z.B.:
+        - Namensräume verwenden
+        - Validierung des Dokuments durchführen
+
+2. Anwendung des DOM-Verarbeitungsinstanzes:
+    -> Interne Instanz von org.w3c.dom.Document, mitsamt der Unterstruktur erzeugen.
+
+DOM-Verarbeitungsinstanz erzeugen/erstellen:
+
+1. Standardimplementierung JAXP:
+-   Verwendung der Klasse 'javax.xml.parsers.DocumentBuilderFactory', um ein
+    'DocumentBuilderFactory'-Instanz erstellen.
+-   Mit dieser Factory, eine eigentliche Verarbeitungsinstanz 'javax.xml.parsers.Documentbuilder'
+    erstellen:
+
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder documentBuilder = factory.newDocumentBuilder();
+
+Für zu erzeugende Verarbeitungsinstanz können in der Factory,
+bestimmte Eigenschaften festgelegt werden, z.B.:
+-   'factory.setNamespaceAware(true)' - Verwendung von Namensräumen
+-   'factory.setValidating(true)' - Durchführung von Validierung
+
+2. DOM-Implementierung von Apache Xerces:
+-   Direkt über Konstruktor, eine Instanz des Parsers 'org.apache.xerces.parsers.DOMParser'
+    erstellen:
+
+    DOMParser domParser = new DOMParser();
+
+DOM-Verarbeitungsinstanz anwenden:
+-   Parse-Methode:
+    Unabhängig von der gewählten Implementierung - das XML-Dokument wird verarbeitet,
+    indem die parse-Methode aufgerufen wird.
+
+-   Dokumentquelle:
+    XML-Dokumentquelle kann auf verschiedene Arten angegeben werden, z.B. durch
+    ->  File-Instanz,
+    ->  InputSource,
+    ->  InputStream,
+    -> oder als URI in Form von String
+
+-   Beispiel:
+    Code zeigt das Erstellen eines Dokument-Objekts, durch
+    - parse-Methode 'DocumentBuilder' oder
+    - 'DOMParser'
+    abhängig von der verwendeten Implementierung
+
+Document document = documentBuilder.parse(fileName);
+Document document = domParser.parse(fileName);
+
+In beiden Fällen: - Ergebnis ist ein DOM-'Document'-Objekt - repräsentiert Struktur von Dokument als Objekthierarchie - stellt sie für weitere Bearbeitung zur Verfügung.
+
+
+Beispiel zu DOM (1):
+AUFGABE: Aus Datei script.xml, interne DOM-Struktur erstellen.
+         Innerhalb dieser Struktur, chapter-Elemente identifizieren und die Überschriften ausgeben.
+
+Lösung:
+1.  Hilfsmethode 'getChapters(Document document)' implementieren, die eine Nodelist mit allen chapter-Elementen zurückgibt:
+
+private static NodeList getChapters(Document document){
+    NodeList list = document.getElementByTagName("chapter");
+    return list;
+}
+
+2.  Methode getChapters() in der main-Methode einer Klasse 'GetChapters' aufrufen:
+
+public static void main(String[] args){
+    String fileName = "script.xml";
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    factory.setValidating(true);
+
+    try{
+        DocumentBuilder documentBuilder = factory.newDocumentBuilder();
+        Document document = documentBuilder.parse(fileName);
+        NodeList chapterList = getChapters(document);
+
+        for(int i = 0; i < chapterList.getLength(); i++){
+            Node node = chapterList.item(i);
+            System.out.println(node.getAttributes().getNamedItem("heading"));
+        }
+    } catch (Exception e){
+        System.out.println(">>> " + e);
+        System.exit(1);
+    }
+}
+
+Bemerkung: Durchlaufen von Ergebnismenge über explizite Indexvariable ist nicht ideal.
+In Java - um die Handhabung zu vereinfachen:
+Verwendung von Streams oder zumindest von Enumeration oder Iterator vorziehen.
+
+
+Beispiel zu DOM (2):
+AUFGABE: Struktur eines DOM-Dokuments vom Wurzelelement beginnend rekursiv durchlaufen.
+Dabei die entsprechenden Knotentypen ausgeben:
+
+Lösung:
+1.  Implementieren: walkDepthFirst(Node node) - besucht jeden Knoten, - gibt dessen Namen aus:
+    Falls Knoten Kindknoten hat,  - wird Methode rekursiv darauf angewendet:
+
+private static void walkDepthFirst(Node node){
+    if(node != null){
+        System.out.println(node.getNodeName());
+        if(node.hasChildNodes()){
+            NodeList children = node.getChildNodes();
+            for(int i = 0; i < children.getLength(); i++){
+                walkDepthFirst(children.item(i));
+            }
+        }
+    }
+}
+
+2.  Diese Methode in der main-Methode einbinden - ein DocumentBuilder wird erzeugt, um Dokument zu parsen.
+    Danach walkDepthFirst()-Methode auf Wurzelelement anwenden:
+
+public static void main(String[] args){
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    factory.setValidating(true);
+
+    try{
+        DocumentBuilder documentBuilder = factory.newDocumentBuilder();
+        Document document = documentBuilder.parse(fileName);
+        walkDepthFirst(document.getDocumentElement());
+    } catch (Exception e){
+        System.out.println(">>> " + e)
+        System.exit(1);
+    }
+}
+
+Methode zeigt: Rekursiv durch ein DOM-Dokument navigieren und Knotennamen ausgeben.
+Grundlegendes Beispiel fürs Durchlaufen und Analyse von XML-Strukturen in Java.
+
+Beispiel zu DOM (1):
+Geben Sie zu jedem Element die vorhandenen Attribute aus.
+
+Beispiel zu DOM (2):
+Gebe die Inhalte der Textknoten aus
+
+Modifizieren und Abspeichern in DOM - wie man ein DOM-Dokument modifiziert und abspeichert:
+
+-   Modifizieren:
+->  Zum Modifizieren des Dokuments - spezifische Methoden in den Knoten-Schnittstellen
+Beispiel: Hinzufügen von para-Elementen:
+    -   Dazu wird Methode modify(Document document) definiert:
+        ->  Ruft Kapitel des Dokuments ab
+        ->  Erstellt für jedes Kapitel einen neuen Textknoten mit aktuellem Datum
+        ->  Ein neues para-Element erzeugt - darin den Textknoten einfügt
+        ->  Fügt das para-Element zum entsprechenden Kapitel hinzu.
+
+public static void modify(Document document){
+    NodeList chapterList = GetChapters.getChapters(document);
+    for(int i = 0; i < chapterList.getLength(); ++i){
+        Node node = chapterList.item(i);
+        Text text = document.createTextNode
+            ("Dies ist neu! (" + new Date() + ")");
+        Element element = document.createElement("para");
+        element.appendChild(text);
+        node.appendChild(element);
+    }
+}
+
+Abspeichern:
+Speichern einer DOM-Struktur kann in der Implementierung "DOM level 3" über das Modul "load and save" erfolgen.
+
+Verwenden von "load and save":
+
+// Zuerst eine Implementierung besorgen, die "load and save" unterstützt
+DOMImplementationRegistry registry = DOMImplementationRegistry.newInstance();
+DOMImplementationLS lsImplementation = (DOMImplementationLS) registry.getDOMImplementation("LS");
+
+// Dann damit die Ausgabedatei festlegen
+String outputName = "output.xml";
+LSOutput output = lsImplementation.createLSOutput();
+output.setByteStream(new FileOutputStream(outputName));
+
+// Und das Dokument mithilfe eines "Serialisierers" schreiben
+LSSerializer serializer = lsImplementation.createLSSerializer();
+serializer.write(document, output);
+
+Validierender DocumentBuilder:
+Vor Erzeugen des DocumentBuilder - Factory anweisen, nur validierende Parser zu erzeugen:
+
+DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+factory.setValidating(true);
+
+1. Ohne Setzen weiterer "Properties" wird angenommen: Im XML-Dokument ist eine DTD enthalten,
+   die zum Validieren verwendet werden kann:
+
+2. Wird im Dokument ein XML-Schema verwendet -> Factory muss über spezielle Property Art des Schemas mitgeteilt werden:
+   (hier immer W3C XML-Schema verwendet)
+final String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/" +
+                                    "schemaLanguage";
+DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+factory.setValidating(true);
+factory.setAttribute(JAXP_SCHEMA_LANGUAGE,XMLConstants.W2C_XML_SCHEMA_NS_URI);
+
+3. Im XML-Dokument kein Schema enthalten - die Schemadatei explizit setzen:
+
+final String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/" + "schemaLanguage";
+final String JAXP_SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/" + "schemaSource";
+
+DocumentBuilderFactory factory = DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+factory.setValidating(true);
+factory.setAttribute(JAXP_SCHEMA_LANGUAGE,XMLConstants.W3C_XML_SCHEMA_NS_URI);
+factory.setAttribute(JAXP_SCHEMA_SOURCE,new File(SCHEMA_FILE));
+
+Validieren mit Validator
+Durch validate Methode der Klasse Validator, lässt die Validierung eines XML-Dokuments oder XML-Elements durchführen:
+
+File schemaFile = new File(SCHEMA_FILE);
+SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+Schema schema = sf.newSchema(schemaFile);
+Validator validator = schema.newValidator();
+
+Document document = ...;
+validator.validate(new DOMSource(document));
+
+Element element = ...;
+validator.validate(new DOMSource(element));
+
+Besonderheiten der DOM-Containerklassen:
+1.  Was gibt das folgende Programmfragment aus?
+2.  Was gibt das folgenden Programmfragment aus, wenn die markierte Zeile auskommentiert wird?
+
+DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+
+Document document = documentBuilder.newDocument();
+
+Element root = document.createElement("root");
+document.appendChild(root);
+
+NodeList list = document.getElementByTagName("foo");
+System.out.printf("#foo elements in document: %s\n", list.getLength());
+
+for(int i = 0; i < 4; i += 1){
+    root.appendChild(document.createElement("foo"));
+    list = document.getElementByTagName("foo"); /* <-- */
+    System.out.printf("#foo elements in document: %s\n", list.getLength());
+}
+
+"live"-Eigenschaft:
+DOM-Containerklasse NodeList besitzt "live"-Eigenschaft, d.h.:
+Änderungen in der Dokumentenstruktur sind sofort in allen betroffenen Instanzen von NodeList sichtbar.
+
+Suchen im DOM: Vorgehen, um Knoten eines spezifischen Namens im DOM zu suchen:
+-   Suchmethoden: getElementByTagName
+    Zum Auffinden von Knoten im gesamten Dokument oder innerhalb eines bestimmten Elementknoten
+
+-   Beispiel: Alle chapter-Elemente im Dokument suchen:
+    Document document = ...; // vorheriges Initialisieren des Document-Objekts
+    NodeList list = document.getElementsByTagName("chapter");
+
+-   Erweiterte Suche: Wie geht eine detaillierte Suche?
+    Für komplexere Suchanfragen sind zusätzliche Techniken oder Methoden benötigt,
+    die über das einfache 'getElementByTagName' hinausgehen.
+
+DOM und XPath:
+-   Integration von XPath:
+    XPath kann in DOM integriert werden, um komplexere Suchanfragen zu ermöglichen.
+-   Beispiel: XPath-Anfrage, um chapter-Elemente zu finden, die 1. als wichtig markier sind und 2. mindestens zwei para-Elemente enthalten.
+
+XPath xpath = XPathFactory.newInstance().newXPath();
+try{
+    Document document = ...; // Das Dokument wird vorher initialisiert
+    NodeList list = (NodeList) xpath.evaluate(
+        "//chapter[not(@important='no')][count(para)>=2]",
+        document, XPathConstants.NODESET);
+} catch(XPathExpressException e) {...}
+
+-   Rückgabetyp von 'evaluate' wird über einen Parameter anhand vordefinierter Konstanten eingestellt
+    (
+    XPathConstants.STRING,
+    XPathConstants.NODE,
+    XPathConstants.NODESET,
+    XPathConstants.BOOLEAN,
+    XPathConstants.NUMBER
+    ).
+
+Zusammenfassung DOM:
+DOM - Programmierschnittstelle für Zugriff auf Bestandteile von XML-Dokumenten.
+
+Überblick:
+-   Ziel von DOM: Zugriff und Interaktion mit den Inhalten von XML-Dokumenten.
+-   Aufbau in Levels: DOM in verschiedenen Levels, mit jeweils verschiedenen Funktionalitäten:
+    ->  Level 1:    Grundlegende Navigation druch Dokumente.
+    ->  Level 2:    Erweiterung um Namensräume
+    ->  Level 3:    Weitere Funktionen wie XPath, Schemata und Validierung
+
+Struktur und Funktionen:
+-   Module: DOM ist in mehrere Module aufgeteilt, wie Core, HTML, Events, Load and Save.
+-   Eigenschaften: Objektorientiert, plattform- und sprachneutral.
+                    Implementierungen in verschiedenen Sprachen (Java, Perl, C++, EXMAScript).
+-   Ursprüngliche Anwendung:
+    Zugriff auf HTML-Elemente in Webbrowsern, später auf beliebige XML-Dokumente erweitert.
+
+Kernkonzepte:
+1.  Knotenpräsentation: Jedes XML-Element wird als Instanz einer Knotenkalsse dargestellt.
+2.  Baumstruktur: Knoteninstanzen sind baumartig miteinander verkettet.
+3.  Knotenmethoden: Methoden für Lesen, Ändern, Löschen, Modifizieren von Daten zur Navigation im Dokument.
+3.  Containerklassen: Für die Aufnahme, wie Listen.
+
+Implementierung und API-Komplexität:
+-   DOM definiert die Schnittstellen,
+    eigentliche Implementierung erfolgt durch DOM-Parser oder DocumentBuilder.
+-   Unterschiedliche Implementierungen weisen Variationen in der internen Datenstruktur und den verwendeten Algorithmen auf.
+-   Aufgrund der Komplexität der API, werden nur ausgewählte DOM-Schnittstellen vorgestellt.
+
+DOM-Knoten:
+-   Node: Basiskalsse für alle Inhaltsarten im DOM
+-   Methoden: Verschiedene Methoden für Interaktionen mit Knoten, wie:
+    ->  getNodeType()
+    ->  getNodeName()
+    ->  getAttributes()
+-   Zugriffsmethoden: Zum Zugriff auf Vorfahren, Nachkommen und Geschwister sowie zum Ändern/Hinzufügen von Kindknoten.
+
+Wichtige Erweiterungen von Node:
+-   Element: Methoden für den Zugriff auf Elementknoten.
+-   Attr: Repräsentier Attributknoten.
+-   CharacterData: Basisklasse für Daten, die aus Zeichenketten bestehen.
+-   Comment, Text, CDATASection: Spezifische Knotentypen für Kommentare, Text und CDATA-Abschnitte
+-   Document: Repräsentiert das gesamte Dokument.
+-   DocumentFragment: Hilfskonstrukt für das Arbeiten mit Dokumenten
+
+Containerklassen:
+-   NodeList: Geordnete Liste von Knoten.
+-   NamedNodeMap: Datenstruktur für den Zugruff auf Knoten über Namen.
+
+Anwendung der DOM-API
+-   Schritte zur Überführung von XML-Dokumenten in eine interen DOM-Darstellung.
+-   Erzeugung und Anwendung von DOM-Verarbeitungsinstanzen.
+-   Beispiele für das Durchlaufen und Analysieren von XML-Strukturen
+
+Weitere Anwendungen:
+-   Beispiele zum Modifizieren und Abspeichern von DOM-Dokumenten
+-   Validierung von XML-Dokumenten mit einem validierenden DocumentBuilder.
+-   Besonderheiten der DOM-Containerklassen und Anwendungen in verschiedenen Szenarien.
+-   Integration von XPath für komplexere Suchanfragen.
+

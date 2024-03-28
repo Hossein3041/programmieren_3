@@ -1,0 +1,29 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- Die obige Zeile ist eine XML-Deklaration.
+     Dieser Kommentar selbst zeigt die Markup-Deklaration für "Comment"
+     -->
+<!-- Die nächste Zeile zeigt die Markup-Deklaration für "Document type declaration" -->
+<!DOCTYPE hello>
+<!-- In den Start-Tag vom "<hello></hello>" Element, sieht man das Attribut: beispiel="das ist ein Beispiel!" -->
+<hello beispiel="das ist ein Beispiel!">
+    Hello folks!
+    <!-- Ab der nächsten Zeile sieht man das Element "<special></special>" -->
+    <special>
+        Erste Variante:
+        &lt;&lt;&lt;&lt;&lt; &amp;&amp;&amp;&amp;&amp; &gt;&gt;&gt;&gt;&gt;
+    </special>
+    <special>
+        Zweite Variante:
+        <![CDATA[<<<<< &&&&& >>>>>]]>
+        <!-- Die obige Zeile zeigt die Markup-Deklaration für "Character date section" -->
+    </special>
+
+    <!-- Ein XML-Dokument kann nur ein Wurzelelement besitzen.
+    Baut man ein zweites Wurzelelement ein, so sieht man im Browser diese Fehlermeldung:
+
+     This page contains the following errors:
+     error on line 21 at column 1: Extra content at the end of the document
+     Below is a rendering of the page up to the first error.
+
+     -->
+</hello>

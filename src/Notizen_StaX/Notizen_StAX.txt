@@ -1,0 +1,176 @@
+Eventuelle Nachteile von SAX
+
+1.  Selbststeuerung der Anwendung:
+- SAX ist umständlich - wenn Anwendung die Verarbeitung selbst steuern möchte.
+- Wenn Ereignisse im XML-Dokument, nicht explizit abgefragt werden,
+  sondern explizit abgefragt werden, bietet sich als alternative Lösung
+  Einsatz von "Pull-Parser".
+
+2.  Verarbeitung bestimmter Teile:
+- Soll Anwendung nur bestimmte Teil des Dokuments verarbeiten -
+  gibt es die Lösung, dass Anwendung ein "Fenster (Curser)" über das Dokument schiebt -
+  und nur interessante Teile sieht.
+
+  Wird ermöglicht durch "Streaming API for XML (StAX)".
+
+
+StAX (Streaming API for XML)
+1.  Paket und Interfaces:
+- Alle Klassen und Interfaces für StAX im Paket
+  'javax.xml.stream' - oder dessen Unterpakete
+
+2.  XML-Dokument als Strom von Ereignissen:
+- Jedes XML-Dokument betrachtet als Strom von Ereignissen:
+  z.B.: Dokumentanfang, -ende, Start- und End-Tag, Textelemente, usw.
+
+3.  Zwei Verarbeitungsmöglichkeiten:
+Iterator-API:
+- Durch  Methoden von 'XMLEventReader' über alle Ereignisse im XML-Dokument iterieren.
+- Ereignisse liegen als Objekte vor:
+  'hasNext()' - Abfrage, ob weitere Ereignisse vorhanden sind
+  'nextEvent()' - Abfrage, um das nächste Ereignis zu lesen.
+
+Curser-API:
+- Durch 'XMLInputFactory' - StAX bietet Curser-API, die ermöglicht:
+  XML durchlaufen - selektiv Teile davon durchlaufen.
+
+4.  Immutable Instanzen:
+- Instanzen von 'XMLEvent' und abgeleiteten Klassen, wie
+  'StartElement',
+  'EndElement',
+  'Attribute',
+  'Comment',
+  'usw',
+
+unveränderlich:
+- können gefahrlos weitergegeben und gespeichert werden.
+
+Beispiele zur Iterator-API:
+
+public class Iterator_API{
+  public static void main(String[] args){
+
+    XMLInputFactory factory = XMLInputFactory.newInstance();
+    XMLEventReader eventReader = factory.createXMLEventReader(new FileInputStream("fileName"));
+
+    // Alle Ereignistypen im XML-Dokument ausgeben:
+    while (eventReader.hasNext()){
+      XMLEvent currentEvent = eventReader.nextEvent();
+      System.out.printf("got %s\n", currentEvent.getClass().getSimpleName());
+    }
+
+    // Mit Vorschau auf den Typen des nächsten Ereignisses:
+    while (eventReader.hasNext()){
+      XMLEvent currentEvent = eventReader.nextEvent();
+      XMLEvent nextEvent = eventReader.peek();
+      System.out.printf("got %s (next will be %s)\n",
+          currentEvent.getClass().getSimpleName(),
+          (nextEvent != null) ? nextEvent.getClass().getSimpleName()  : null);
+    }
+
+    // Ausgabe der Namen alle Elementknoten und ihre Attribute
+    while(eventReader.hasNext()){
+      XMLEvent currentEvent = eventReader.nextEvent();
+      if(currentEvent.isStartElement()){
+        StartElement startElement = currentEvent.asStartElement();
+        System.out.printf("<%s>\n", startElement.getName());
+        startElement.getAttributes().forEachRemaining(
+            attribute -> System.out.printf(" %s: %s\n",
+                attribute.getName(), attribute.getValue())
+            );
+      }
+    }
+  }
+}
+
+Bemerkungen zur Iterator-API:
+- Bei großen Überspringen von Teilen des XML-Dokuments,
+  werden viele 'XML-Events'- Instanzen unnötig erzeugt und vernichtet
+  -> Führt zu unnötigem Zeit- und Speicherverbrauch.
+
+Curser-API:
+- Durch 'XMLStreamReader' wird ein Curser über die Ereignisse in einem XML-Dokument bewegt.
+- Methoden werden verwendet, um Informationen zu Ereignissen zu erhalten
+  und den Cursor zu bewegen:
+  ->  int getEventType()
+      liefert Typ des Ereignisses an aktuelle Cursorposition
+  ->  boolean hasNExt()
+      Abfrage, ob weitere Ereignisse im XML-Dokument vorhanden sind
+  ->  int next()
+      bewegt Cursor zum nächsten Ereignis
+
+- An jeder Cursorposition direkt auf die jeweiligen Daten zugreifen:
+  Wenn die Methode nicht zum Kontext passt -
+  dabei ist eine 'IllegalStateException' möglich
+
+  ->  isStartElement(),
+      isEndElement(),
+      isWhiteSpace(),
+      isCharacters()
+      - Abfrage der Art der Daten an aktuelle Cursorposition
+->    String getLocalName()
+      liefert Namen des aktuellen Elements
+
+->    String getElementText()
+      liefert Inhalt eines Textelements
+
+->    getAttributeCount()
+      liefert Anzahl der Attribute des aktuellen Elements
+
+Beispiel zur Cursor-API:
+- Cursor soll über alle Ereignisse in ein XML-Dokument bewegen,
+  ->  Nummern der Ereignisse,
+  ->  Namen aller XML-Elemente,
+  ->  sowie enthaltene Attribute
+      ausgeben:
+
+public class Cursor_API{
+  public static void main(String[] args){
+
+    // Ausgabe der Attribute der 'chapter'-Elemente
+    while(strmReader.hasNext()){
+      strmReader.next();
+      if(strmReader.isStartElement() &&
+            strmReader.getLocalName().equals("chapter")){
+          int attributeCount = strmReader.getAttributeCount();
+          System.out.printf("<%s>\n", strmReader.getLocalName());
+          for(int i = 0; i < attributeCount; i += 1){
+              System.out.printf(" %s: %s\n",
+                    strmReader.getAttributeName(i),
+                    strmReader.getAttributeValue(i));
+          }
+            }
+    }
+
+
+    // Verwendung von 'require()' anstelle der expliziten Abfrage für das 'chapter'-Element
+    while(strmReader.hasNext()){
+      strmReader.next();
+      try{
+          strmReader.require(XMLEvent.START_ELEMENT, null, "chaoter");
+          int attributeCount = strmReader.getAttributeCount();
+          // ...
+      } catch (XMLStreamException e){
+          System.out.printf("Ignoring event type %s\n", strmReader.getEventType());
+      }
+    }
+
+    // Vorabfilterung nicht benötigter Ereignisse mit einem 'StreamFilter'
+    XMLStreamReader streamReader = factory.createXMLStreamReader(new FileInputStream("fileName"));
+    XMLStreamReader filteredStrmReader = factory.createFilteredReader(streamReader,
+        r -> r.isStartElement() && r.getLocalName().equals("chapter"));
+    while(filteredStrmReader.hasNext()){
+        filteredStrmReader.next();
+        // ...
+    }
+
+  }
+}
+
+
+Bemerkungen zur Cursor-API:
+- Mittels 'XMLEventAllocator' werden auch Instanzen von 'XMLEvent' aus Iterator-API erzeugt
+  die StAX-API enthält im Gegensatz zu SAX auch Methoden zum Erstellen von XML-Dokumenten.
+
+
+

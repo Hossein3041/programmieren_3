@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Labordaten xmlns="assignment01.webprog.de"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="assignment01.webprog.de Assignment1.xsd">
+    <Labor Name="Labor01" Raum="Raum01">
+        <Computer RechnerId="Rechner01">
+            <Betriebssystem>MAc OS</Betriebssystem>
+            <Anschaffung>2002-09-24</Anschaffung>
+            <Erweiterungen>
+                    <Beschreibung>
+                        <Hersteller>NVIDIA</Hersteller>
+                    </Beschreibung>
+                    <Besonderheiten>Keine</Besonderheiten>
+            </Erweiterungen>
+            <Rechnerbeschreibung>
+                    <Hersteller>NVIDIA</Hersteller>
+            </Rechnerbeschreibung>
+            <Rechnerbesonderheiten>Keine</Rechnerbesonderheiten>
+            <Software2 lizensiert="true" Id="Eclipse"/>
+        </Computer>
+        <Software ID="Eclipse">
+            <Softwarename>Eclipse</Softwarename>
+            <Softwarebeschreibung>
+                    <Hersteller>NVIDIA</Hersteller>
+            </Softwarebeschreibung>
+            <Softwarebesonderheiten>Keine</Softwarebesonderheiten>
+        </Software>
+        <weitere_Geraete>
+            <Art>Beamer</Art>
+            <Beschreibung>
+                    <Hersteller>NVIDIA</Hersteller>
+            </Beschreibung>
+        </weitere_Geraete>
+    </Labor>
+</Labordaten>
+

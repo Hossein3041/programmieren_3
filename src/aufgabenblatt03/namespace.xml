@@ -1,0 +1,62 @@
+<!-- Exercise adopted from "http://www.xml.com/pub/a/2004/05/12/py-xml.html" -->
+<!-- AUFGABENBLATT 03
+3.1: Laden Sie vom Server die XML-Datei namespace.xml und bestimmen Sie fur alle enthaltenen ¨
+Tags den jeweiligen Namensraum.
+
+1. Namensraum + die zugehörigen Tags:
+xmlns:html="http://www.w3.org/1999/xhtml"
+<html:code></html:code>
+<html:div></html:div>
+
+2. Namensraum + die zugehörigen Tags:
+xmlns:p="http://example.com/product-info"
+<p:product></p:product>
+<p:name></p:name>
+<p:description></p:description>
+<p:code></p:code>
+
+3. Namensraum + die zugehörigen Tags:
+xmlns="http://example.com/product-info"
+<product></product>
+<name></name>
+<description></description>
+<div></div>
+
+4. Namensraum + die zugehörigen Tags:
+xmlns:xhtml="http://www.w3.org/1999/xhtml"
+<xhtml:code></xhtml:code>
+
+5. Namensraum + zugehörigen Tags:
+xmlns:xl="http://www.w3.org/1999/xlink"
+- keine Tags/Elemente
+
+-->
+
+
+
+<products xmlns:html="http://www.w3.org/1999/xhtml">
+  <product id="1144"
+    xmlns="http://example.com/product-info">
+    <name xml:lang="en">Python Perfect IDE</name>
+    <description>
+      Uses mind-reading technology to anticipate and accommodate
+      all user needs in Python development.  Implements all
+      <html:code>from __future__ import</html:code> features though
+      the year 3000.  Works well with <code>1166</code>.
+    </description>
+  </product>
+  <p:product id="1166" xmlns:p="http://example.com/product-info">
+    <p:name>XSLT Perfect IDE</p:name>
+    <p:description
+      xmlns:xhtml="http://www.w3.org/1999/xhtml"
+      xmlns:xl="http://www.w3.org/1999/xlink"
+	  >
+      <p:code>red</p:code>
+      <xhtml:code>blue</xhtml:code>
+      <html:div>
+        <ref xl:type="simple" xl:href="index.xml">A link</ref>
+      </html:div>
+      <div align="center">now it is over ;-)</div>
+    </p:description>
+  </p:product>
+</products>
